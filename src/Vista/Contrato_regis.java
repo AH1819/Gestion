@@ -4,6 +4,7 @@ import Entity.Cat_Consumo;
 import Entity.Cat_periodo;
 import Entity.Cliente;
 import Entity.Contrato;
+import Entity.Contrato_generado;
 import Entity.DetTipoconsumoTarifa;
 import Entity.ErrorsAndSuccesses;
 import Servicio.CatalogosServicio;
@@ -14,21 +15,11 @@ import static Vista.Interfaz2.content;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.sql.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Contrato_regis extends javax.swing.JPanel {
 
-    String nombre;
-    String app;
-    String apm;
-    Date nac;
-    String tel;
-    String rfc;
-    String celular;
-    String email;
-    String curp;
     String Muni;
     String Resi;
     String nom_calle;
@@ -36,12 +27,14 @@ public class Contrato_regis extends javax.swing.JPanel {
     int Manz;
     int Lot;
     int folio;
+    int folio_ct;
     String ubicacion;
     int idconsumo;
     int idperiodo;
     String opcion;
     private boolean edit;
     int id;
+    String observaciones = "sin observaciones";
     ErrorsAndSuccesses es = new ErrorsAndSuccesses();
 
     public Contrato_regis(Cliente cliente, String ubicacion) {
@@ -49,30 +42,16 @@ public class Contrato_regis extends javax.swing.JPanel {
         Cargando.setVisible(false);
         GetConsumo();
         GetPeriodo();
-        this.nombre = cliente.getNombre();
-        this.app = cliente.getApellido_p();
-        this.apm = cliente.getApellido_m();
-        this.nac = cliente.getFecha_nac();
-        this.tel = cliente.getTelefono();
-        this.rfc = cliente.getRfc();
-        this.curp = cliente.getCurp();
-        this.email = cliente.getEmail();
-        this.celular = cliente.getCelular();
-        this.Lot = cliente.getNumeroLt();
-        this.Manz = cliente.getNumeroMzn();
-        this.Muni = cliente.getMunicipio();
-        this.Resi = cliente.getResidencia();
-        this.nom_calle = cliente.getNombreCalle();
-        this.Refe = cliente.getCalleReferencia();
         this.ubicacion = ubicacion;
-        InsertarCliente();
+        this.folio = cliente.getFolio();
+        Existencia();
         if (opcion.equals("Si")) {
             Referencia.setText(cliente.getCalleReferencia());
             Municipio.setText(cliente.getMunicipio());
             Residencia.setText(cliente.getResidencia());
             Nombre_calle.setText(cliente.getNombreCalle());
-            Lote.setText(cliente.getNumeroLt().toString());
-            Manzana.setText(cliente.getNumeroMzn().toString());
+            Lote.setText(cliente.getNumeroLt());
+            Manzana.setText(cliente.getNumeroMzn());
         }
     }
 
@@ -83,12 +62,15 @@ public class Contrato_regis extends javax.swing.JPanel {
         GetPeriodo();
         this.ubicacion = ubicacion;
         this.folio = folio;
+        nombre(folio);
     }
 
     public Contrato_regis(boolean edit, int folio, String ubicacion) {
         initComponents();
         Cargando.setVisible(false);
         this.ubicacion = ubicacion;
+        this.folio_ct = folio;
+        this.edit = edit;
         if (edit == true) {
             Obtener(folio);
             Contrato.setText("Modificar datos del contrato");
@@ -121,7 +103,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         Tipo_c = new javax.swing.JLabel();
         Tarifa = new javax.swing.JComboBox<>();
         tarifa = new javax.swing.JLabel();
-        observaciones = new javax.swing.JLabel();
+        observacione = new javax.swing.JLabel();
         Registrar = new javax.swing.JButton();
         Regresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -304,7 +286,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Nombre de la calle:");
-        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 120, 20));
+        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 140, 20));
 
         jLabel14.setBackground(new java.awt.Color(0, 0, 0));
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -322,7 +304,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         rerefencia.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         rerefencia.setForeground(new java.awt.Color(0, 0, 0));
         rerefencia.setText("Calle de referencia:");
-        add(rerefencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 50, 120, 20));
+        add(rerefencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 50, 140, 20));
 
         Tipo_c.setBackground(new java.awt.Color(0, 0, 0));
         Tipo_c.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -341,16 +323,17 @@ public class Contrato_regis extends javax.swing.JPanel {
         tarifa.setText("Tarifa:");
         add(tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 110, 40));
 
-        observaciones.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        observaciones.setForeground(new java.awt.Color(0, 0, 0));
-        observaciones.setText("Observaciones:");
-        add(observaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 110, 30));
+        observacione.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        observacione.setForeground(new java.awt.Color(0, 0, 0));
+        observacione.setText("Observaciones: (opcional)");
+        add(observacione, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 180, 30));
 
         Registrar.setBackground(new java.awt.Color(18, 90, 173));
         Registrar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         Registrar.setForeground(new java.awt.Color(255, 255, 255));
         Registrar.setText("Registrar");
         Registrar.setBorder(null);
+        Registrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Registrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RegistrarActionPerformed(evt);
@@ -363,6 +346,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         Regresar.setForeground(new java.awt.Color(255, 255, 255));
         Regresar.setText("Volver");
         Regresar.setBorder(null);
+        Regresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RegresarActionPerformed(evt);
@@ -526,7 +510,6 @@ public class Contrato_regis extends javax.swing.JPanel {
     }//GEN-LAST:event_ReferenciaMousePressed
 
     private void MunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MunicipioKeyTyped
-        // TODO add your handling code here:
         entrada(evt);
     }//GEN-LAST:event_MunicipioKeyTyped
 
@@ -580,52 +563,52 @@ public class Contrato_regis extends javax.swing.JPanel {
 
     private void ConsumoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ConsumoItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            GetIdconsumo();
             new Tari().show();
         }
     }//GEN-LAST:event_ConsumoItemStateChanged
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
-        if(edit == true){
-            
-        }else{
-            InsertarContrato(folio);
+        if (edit == true) {
+
+        } else {
+            if (Municipio.getText().equals(" Municipio") || Municipio.getText().isEmpty()
+                    || Residencia.getText().equals(" Col/barrio/fracc") || Residencia.getText().isEmpty()
+                    || Nombre_calle.getText().equals(" Nombre de la calle") || Nombre_calle.getText().isEmpty()
+                    || Referencia.getText().equals(" Calle de referencia") || Referencia.getText().isEmpty()
+                    || Manzana.getText().equals(" Num. Mazn") || Manzana.getText().isEmpty()
+                    || Lote.getText().equals(" Num. Lt") || Lote.getText().isEmpty()
+                    || Consumo.getSelectedItem().equals("Selecciona una opcion") || Periodo.getSelectedItem().equals("Selecciona una opcion")
+                    || Tarifa.getSelectedItem().equals("Selecciona una opcion")) {
+                JOptionPane.showMessageDialog(this, "Campos vacios", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                if(Observaciones.getText().isEmpty()){
+                    
+                }else{
+                    observaciones = Observaciones.getText();
+                }
+                InsertarContrato(folio);
+                if (es.getResultinsert() == -1) {
+                    JOptionPane.showMessageDialog(this, "Hubo un error", "Error", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Contrato creado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    Contrato_generado cg = new Contrato_generado(folio, es.getResultinsert());
+                    Generar_contrato gc = new Generar_contrato("");
+                    gc.setSize(1030, 500);
+                    gc.setLocation(0, 0);
+                    content.removeAll();
+                    content.add(gc, BorderLayout.CENTER);
+                    content.revalidate();
+                    content.repaint();
+                }
+            }
         }
     }//GEN-LAST:event_RegistrarActionPerformed
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
-        if (edit != true) {
-            if (ubicacion.equals("contrato")) {
-                Contrato_v p1 = new Contrato_v();
-                p1.setSize(1030, 500);
-                p1.setLocation(0, 0);
-
-                content.removeAll();
-                content.add(p1, BorderLayout.CENTER);
-                content.revalidate();
-                content.repaint();
-            }
-            if (ubicacion.equals("insert cliente")) {
-                Clientes p1 = new Clientes();
-                p1.setSize(1030, 500);
-                p1.setLocation(0, 0);
-
-                content.removeAll();
-                content.add(p1, BorderLayout.CENTER);
-                content.revalidate();
-                content.repaint();
-            }
-            if (ubicacion.equals("cliente")) {
-                Clientes p1 = new Clientes();
-                p1.setSize(1030, 500);
-                p1.setLocation(0, 0);
-
-                content.removeAll();
-                content.add(p1, BorderLayout.CENTER);
-                content.revalidate();
-                content.repaint();
-            }
-        } else {
+        if (ubicacion.equals("insert cliente")) {
+            JOptionPane.showMessageDialog(this, "El contrato no puede ser cancelado", "Contrato", JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (ubicacion.equals("editar contrato")) {
             Contrato_v p1 = new Contrato_v();
             p1.setSize(1030, 500);
             p1.setLocation(0, 0);
@@ -635,7 +618,16 @@ public class Contrato_regis extends javax.swing.JPanel {
             content.revalidate();
             content.repaint();
         }
+        if (ubicacion.equals("cliente contrato")) {
+            Clientes p1 = new Clientes();
+            p1.setSize(1030, 500);
+            p1.setLocation(0, 0);
 
+            content.removeAll();
+            content.add(p1, BorderLayout.CENTER);
+            content.revalidate();
+            content.repaint();
+        }
     }//GEN-LAST:event_RegresarActionPerformed
     public class Tari implements Runnable {
 
@@ -645,6 +637,7 @@ public class Contrato_regis extends javax.swing.JPanel {
 
         @Override
         public void run() {
+            GetIdconsumo();
             GetTarifa(idconsumo);
         }
     }
@@ -681,21 +674,16 @@ public class Contrato_regis extends javax.swing.JPanel {
         idperiodo = cs.GetIdperiodo(Periodo.getSelectedItem().toString());
     }
 
-    private void InsertarCliente() {
-        Cliente c = new Cliente();
-        ClienteServicio cs = new ClienteServicio();
-        String status = "activo";
-        folio = cs.InsertarCliente(nombre, app, apm, nac, tel, celular, email, curp, rfc, Muni, Resi, nom_calle, Refe, Manz, Lot, status);
-        Existencia();
-    }
-
     public void InsertarContrato(int folio) {
         GetIdperiodo();
         ContratoServicio cs = new ContratoServicio();
         String status = "activo";
-        Double deuda = 0.0;
         GetTarifaid();
-        es.setResultact(cs.InsertarContrato(Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Observaciones.getText(), Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), id, idconsumo, idperiodo, deuda, folio, status));
+        Contrato_generado cg = new Contrato_generado();
+        cg.setDireccion(Municipio.getText() + "," + Residencia.getText() + "," + Nombre_calle.getText());
+        cg.setManzana(Manzana.getText());
+        cg.setLote(Lote.getText());
+        es.setResultinsert(cs.InsertarContrato(Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), observaciones, Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), id, idconsumo, idperiodo, folio, status));
     }
 
     private void entrada(KeyEvent evt) {
@@ -744,7 +732,7 @@ public class Contrato_regis extends javax.swing.JPanel {
 
     private void Obtener(int folio) {
         ContratoServicio cts = new ContratoServicio();
-        List<Contrato> lista = cts.SearchContrato(folio);
+        List<Contrato> lista = cts.SearchContrato_c(folio);
         int tam = lista.size();
         for (int i = 0; i < tam; i++) {
             Municipio.setText(lista.get(i).getMunicipio());
@@ -760,7 +748,23 @@ public class Contrato_regis extends javax.swing.JPanel {
             Periodo.addItem(lista.get(i).getId_periodo().toString());
             Observaciones.setText(lista.get(i).getObservaciones());
             Tarifa.addItem(lista.get(i).getConsec().toString());
-            //Folio.setText(lista.get(i).getFolio_cte().toString());
+            Folio.setText(lista.get(i).getFolio_cte().toString());
+        }
+    }
+    
+    private void actualizar() {
+        ContratoServicio cs = new ContratoServicio();
+        es.setResultact(cs.ActualizarContrato(folio_ct, Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Observaciones.getText(), Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), id, idconsumo, idperiodo));
+    }
+
+    private void nombre(int folio) {
+        ClienteServicio cs = new ClienteServicio();
+        List<Cliente> lista = cs.SearchClientes(folio);
+        int tam = lista.size();
+        Contrato_generado cg = new Contrato_generado();
+        for (int i = 0; i < tam; i++) {
+            cg.setNombre_cliente(lista.get(i).getNombre() + " " + lista.get(i).getApellido_p() + " " + lista.get(i).getApellido_m());
+            System.out.println(cg.getNombre_cliente());
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -788,7 +792,7 @@ public class Contrato_regis extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel observaciones;
+    private javax.swing.JLabel observacione;
     private javax.swing.JLabel rerefencia;
     private javax.swing.JLabel tarifa;
     // End of variables declaration//GEN-END:variables
