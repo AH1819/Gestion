@@ -15,9 +15,9 @@ public class ContratoServicio {
         return ret;
     }
 
-    public int ActualizarContrato(Integer folio, String municipio, String residencia, String nombrec, String referencia,String observaciones, Integer mzn, Integer lt, Integer consec, Integer consumo, Integer periodo) {
+    public int ActualizarContrato(Integer folio, String municipio, String residencia, String nombrec, String referencia,String observaciones, Integer mzn, Integer lt) {
         int ret = 0;
-        Contrato ct = new Contrato(folio, municipio, residencia, nombrec, referencia,observaciones, mzn, lt, consec, consumo, periodo);
+        Contrato ct = new Contrato(folio, municipio, residencia, nombrec, referencia,observaciones, mzn, lt);
         ret = this.Ctdao.ActualizarContrato(ct);
         return ret;
     }
@@ -40,5 +40,8 @@ public class ContratoServicio {
     }
     public void DardeBaja(int folio){
         Ctdao.DarDeBajaContrato(folio);
+    }
+    public List<Contrato> Generarcontrato(int folio){
+        return this.Ctdao.GenerarContrato(folio);
     }
 }

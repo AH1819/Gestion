@@ -10,14 +10,14 @@ public class ClienteServicio {
 
     private ClienteDao Cdao = new ClienteDao();
 
-    public int InsertarCliente(String nombre, String apellido_p, String apellido_m, Date fecha, String telefono, String celular, String email,String curp, String rfc, String municipio, String residencia, String nombre_calle,String referencia, String mzn, String lt, String status) {
+    public int InsertarCliente(String nombre, String apellido_p, String apellido_m, Date fecha, String telefono, String celular, String email,String curp, String rfc, String municipio, String residencia, String nombre_calle,String referencia, int mzn, int lt, String status) {
         Cliente cl = new Cliente(nombre, apellido_p, apellido_m, fecha, telefono, celular, email, curp, rfc, municipio, residencia, nombre_calle, referencia, mzn, lt, status);
         int ret = this.Cdao.InsertarCliente(cl);
         
         return ret;
     }
 
-    public int ActualizarCliente(Integer folio, String nombre, String apellido_p, String apellido_m, Date fecha, String telefono,String celular,String email,String curp, String rfc, String municipio, String colonia, String nombre_calle, String referencia, String mzn, String lt) {
+    public int ActualizarCliente(Integer folio, String nombre, String apellido_p, String apellido_m, Date fecha, String telefono,String celular,String email,String curp, String rfc, String municipio, String colonia, String nombre_calle, String referencia, int mzn, int lt) {
         int ret = 0;
         Cliente cl = new Cliente(folio, nombre, apellido_p, apellido_m, fecha, telefono,celular,email, curp,rfc, municipio, colonia, nombre_calle, referencia, mzn, lt);
         ret = this.Cdao.ActualizarCliente(cl);

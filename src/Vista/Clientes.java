@@ -1,6 +1,7 @@
 package Vista;
 
 import Entity.Cliente;
+import Entity.ErrorsAndSuccesses;
 import Servicio.ClienteServicio;
 import static Vista.Interfaz2.content;
 import java.awt.BorderLayout;
@@ -12,14 +13,15 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Clientes extends javax.swing.JPanel {
 
     String opcion;
-
+    ErrorsAndSuccesses es = new ErrorsAndSuccesses();
     public Clientes() {
-
         initComponents();
+        es.setUbicacion("cliente");
         Cargando.setVisible(false);
         espera.setVisible(false);
         esperacontrato.setVisible(false);
@@ -58,27 +60,101 @@ public class Clientes extends javax.swing.JPanel {
     private void initComponents() {
 
         Title = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        Mostrar = new javax.swing.JTable();
         usrnm = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         Buscar = new javax.swing.JButton();
         NewC = new javax.swing.JButton();
         Registro = new javax.swing.JButton();
         Edit = new javax.swing.JButton();
-        esperacontrato = new javax.swing.JLabel();
-        espera = new javax.swing.JLabel();
-        esperabusqueda = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Mostrar = new javax.swing.JTable();
         Delete = new javax.swing.JButton();
         Cargando = new javax.swing.JLabel();
+        esperabusqueda = new javax.swing.JLabel();
+        espera = new javax.swing.JLabel();
+        esperacontrato = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Title.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Title.setText("Clientes");
-        add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 160, -1));
+        add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, -1));
 
+        usrnm.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        usrnm.setForeground(new java.awt.Color(102, 102, 102));
+        usrnm.setText("Ingrese el folio de cliente a buscar");
+        usrnm.setBorder(null);
+        usrnm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                usrnmMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                usrnmMouseReleased(evt);
+            }
+        });
+        add(usrnm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 610, 30));
+
+        jSeparator2.setForeground(new java.awt.Color(0, 153, 255));
+        jSeparator2.setPreferredSize(new java.awt.Dimension(250, 10));
+        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 610, 10));
+
+        Buscar.setBackground(new java.awt.Color(18, 90, 173));
+        Buscar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Buscar.setForeground(new java.awt.Color(255, 255, 255));
+        Buscar.setText("Buscar");
+        Buscar.setBorder(null);
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
+            }
+        });
+        add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, 80, 30));
+
+        NewC.setBackground(new java.awt.Color(18, 90, 173));
+        NewC.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        NewC.setForeground(new java.awt.Color(255, 255, 255));
+        NewC.setText("Nuevo contrato");
+        NewC.setToolTipText("crear un contrato con un cliente ya existente");
+        NewC.setBorder(null);
+        NewC.setEnabled(false);
+        NewC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewCActionPerformed(evt);
+            }
+        });
+        add(NewC, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, 140, 30));
+
+        Registro.setBackground(new java.awt.Color(18, 90, 173));
+        Registro.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        Registro.setForeground(new java.awt.Color(255, 255, 255));
+        Registro.setText("Registro de cliente");
+        Registro.setToolTipText("crear un nuevo cliente");
+        Registro.setBorder(null);
+        Registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistroActionPerformed(evt);
+            }
+        });
+        add(Registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 440, 160, 30));
+
+        Edit.setBackground(new java.awt.Color(18, 90, 173));
+        Edit.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        Edit.setForeground(new java.awt.Color(255, 255, 255));
+        Edit.setText("Editar");
+        Edit.setToolTipText("Editar a un cliente seleccionado");
+        Edit.setBorder(null);
+        Edit.setEnabled(false);
+        Edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditActionPerformed(evt);
+            }
+        });
+        add(Edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 440, 80, 30));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+
+        Mostrar.setBackground(new java.awt.Color(255, 255, 255));
         Mostrar.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         Mostrar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -118,87 +194,7 @@ public class Clientes extends javax.swing.JPanel {
             Mostrar.getColumnModel().getColumn(1).setPreferredWidth(200);
         }
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 1030, 320));
-
-        usrnm.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        usrnm.setForeground(new java.awt.Color(102, 102, 102));
-        usrnm.setText("Ingrese el folio de cliente a buscar");
-        usrnm.setBorder(null);
-        usrnm.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                usrnmMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                usrnmMouseReleased(evt);
-            }
-        });
-        add(usrnm, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 610, 30));
-
-        jSeparator2.setForeground(new java.awt.Color(0, 153, 255));
-        jSeparator2.setPreferredSize(new java.awt.Dimension(250, 10));
-        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 610, 10));
-
-        Buscar.setBackground(new java.awt.Color(18, 90, 173));
-        Buscar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        Buscar.setForeground(new java.awt.Color(255, 255, 255));
-        Buscar.setText("Buscar");
-        Buscar.setBorder(null);
-        Buscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarActionPerformed(evt);
-            }
-        });
-        add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, 80, 30));
-
-        NewC.setBackground(new java.awt.Color(18, 90, 173));
-        NewC.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        NewC.setForeground(new java.awt.Color(255, 255, 255));
-        NewC.setText("Nuevo contrato");
-        NewC.setToolTipText("crear un contrato con un cliente ya existente");
-        NewC.setBorder(null);
-        NewC.setEnabled(false);
-        NewC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewCActionPerformed(evt);
-            }
-        });
-        add(NewC, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, 140, 30));
-
-        Registro.setBackground(new java.awt.Color(18, 90, 173));
-        Registro.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        Registro.setForeground(new java.awt.Color(255, 255, 255));
-        Registro.setText("Registro de cliente");
-        Registro.setToolTipText("crear un nuevo cliente");
-        Registro.setBorder(null);
-        Registro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegistroActionPerformed(evt);
-            }
-        });
-        add(Registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 420, 160, 30));
-
-        Edit.setBackground(new java.awt.Color(18, 90, 173));
-        Edit.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        Edit.setForeground(new java.awt.Color(255, 255, 255));
-        Edit.setText("Editar");
-        Edit.setToolTipText("Editar a un cliente seleccionado");
-        Edit.setBorder(null);
-        Edit.setEnabled(false);
-        Edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditActionPerformed(evt);
-            }
-        });
-        add(Edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 420, 80, 30));
-
-        esperacontrato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
-        add(esperacontrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 30, 50, 50));
-
-        espera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
-        add(espera, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 410, 50, 50));
-
-        esperabusqueda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
-        add(esperabusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 30, 50, 50));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1030, 340));
 
         Delete.setBackground(new java.awt.Color(18, 90, 173));
         Delete.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -212,11 +208,20 @@ public class Clientes extends javax.swing.JPanel {
                 DeleteActionPerformed(evt);
             }
         });
-        add(Delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, 110, 30));
+        add(Delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 440, 110, 30));
 
         Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
-        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 500));
+        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1030, 340));
+
+        esperabusqueda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(esperabusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 30, 50, 50));
+
+        espera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(espera, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 430, 50, 50));
+
+        esperacontrato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(esperacontrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 30, 50, 50));
     }// </editor-fold>//GEN-END:initComponents
 
     private void MostrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MostrarMousePressed
@@ -286,31 +291,16 @@ public class Clientes extends javax.swing.JPanel {
 
         @Override
         public void run() {
-            Title.setVisible(false);
-            usrnm.setVisible(false);
-            Buscar.setVisible(false);
-            Buscar.setVisible(false);
+
             Mostrar.setVisible(false);
             jScrollPane2.setVisible(false);
-            NewC.setVisible(false);
-            Registro.setVisible(false);
-            Edit.setVisible(false);
-            Delete.setVisible(false);
-            jSeparator2.setVisible(false);
             Cargando.setVisible(true);
             Mostrar();
             Cargando.setVisible(true);
-            Title.setVisible(true);
-            usrnm.setVisible(true);
-            Buscar.setVisible(true);
-            Buscar.setVisible(true);
+
             Mostrar.setVisible(true);
             jScrollPane2.setVisible(true);
-            NewC.setVisible(true);
-            Registro.setVisible(true);
-            Edit.setVisible(true);
-            Delete.setVisible(true);
-            jSeparator2.setVisible(true);
+
         }
     }
 
@@ -344,7 +334,8 @@ public class Clientes extends javax.swing.JPanel {
             if (opcion.equals("Baja cliente")) {
                 espera.setVisible(true);
                 Baja();
-                new Iniciar().show();
+                DefaultTableModel modelo = (DefaultTableModel) Mostrar.getModel();
+                modelo.removeRow(Mostrar.getSelectedRow());
                 espera.setVisible(false);
             }
         }
@@ -356,7 +347,7 @@ public class Clientes extends javax.swing.JPanel {
     }
 
     private void Editar() {
-        InsertCl p1 = new InsertCl(true, Integer.parseInt(usrnm.getText()), "editar cliente");
+        InsertCl p1 = new InsertCl(Integer.parseInt(usrnm.getText()), "editar cliente");
         p1.setSize(1030, 479);
         p1.setLocation(0, 0);
 

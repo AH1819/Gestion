@@ -65,7 +65,7 @@ public class Cat_descuentoDao {
         return ret;
     }
     public List<Cat_descuento> MostrarDescuentos(){
-        List<Cat_descuento> CD = new ArrayList<Cat_descuento>();
+        List<Cat_descuento> CD = new ArrayList<>();
         
         String sql = "select * from cliente order by folio_cte";
         PreparedStatement comando = null;
@@ -87,6 +87,57 @@ public class Cat_descuentoDao {
         }
         return CD;
         
+    }
+    
+    public List<Cat_descuento> MostrarDescuentos(int id){
+        List<Cat_descuento> CD = new ArrayList<>();
+        
+        String sql = " select cat.porcentaje from lectura_pago lp inner join cat_descuento cat "
+                + "on lp.id_desc = cat.id_desc inner join contrato ct "
+                + "on ct.folio_contrato = lp.folio_contrato "
+                + "where ct.folio_contrato = ? "
+                + "order by id_lect_pago";
+        PreparedStatement comando = null;
+        
+        try {
+            comando = conexion.conectar().prepareStatement(sql);
+            comando.setInt(1, id);
+            Resultado = comando.executeQuery();
+            
+            while(Resultado.next()){
+                Cat_descuento cd = new Cat_descuento();
+                cd.setPorcentaje(Resultado.getDouble("porcentaje"));
+                CD.add(cd);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Cat_descuentoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return CD;
+        
+    }
+    
+    public List<Cat_descuento> ObtenerDescuentos(){
+        List<Cat_descuento> CD = new ArrayList<>();
+        String sql = "select * from cat_descuento order by id_desc";
+        PreparedStatement comando = null;
+        try {
+            comando = conexion.conectar().prepareStatement(sql);
+            Resultado = comando.executeQuery();
+            
+            while(Resultado.next()){
+                Cat_descuento cd = new Cat_descuento();
+                cd.setId_desc(Resultado.getInt("id_desc"));
+                cd.setFecha_inc(Resultado.getDate("fecha_inc"));
+                cd.setFecha_fin(Resultado.getDate("fecha_fin"));
+                cd.setDescripcion(Resultado.getString("descripcion"));
+                cd.setPorcentaje(Resultado.getDouble("porcentaje"));
+                CD.add(cd);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Cat_descuentoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return CD;
     }
     
     public int EliminarDescuento(int id){

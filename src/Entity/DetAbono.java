@@ -11,6 +11,12 @@ public class DetAbono {
     private Integer id_lectura_pago;
     private Integer id_tipo_pago;
 
+    public DetAbono(Double abono, Integer id_lect_pago, Integer id_tipo_pago) {
+        this.abono = abono;
+        this.id_lectura_pago = id_lect_pago;
+        this.id_tipo_pago = id_tipo_pago;
+    }
+
     public Date getFechaHora() {
         return fechaHora;
     }

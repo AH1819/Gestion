@@ -37,7 +37,7 @@ public class PersistenciaLogeo {
             obji.close();
             fichero.close();
         } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error -->\n" + e, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se a configurado la conexion\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

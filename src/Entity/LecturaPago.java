@@ -14,12 +14,26 @@ public class LecturaPago {
     private Double adeudo;
     private String status;
     private Integer folio_contrato;
-    private Integer id_desc;
+    private Integer folio_cliente;
+    private String nombre_cliente;
     private Integer id_m;
-
+    private String mes;
+    private String tipo_periodo;
+    private String Tiempo_transcurrido;
+    
     public LecturaPago() {
     }
 
+    public LecturaPago(Double lecturaIni, Double lecturaFin, Double consumo, Integer folio_contrato,Integer id_m) {
+        this.lecturaIni = lecturaIni;
+        this.lecturaFin = lecturaFin;
+        this.consumo = consumo;
+        this.folio_contrato = folio_contrato;
+        this.id_m = id_m;
+    }
+    
+    
+    
     public LecturaPago(Integer idLectPago) {
         this.idLectPago = idLectPago;
     }
@@ -104,19 +118,51 @@ public class LecturaPago {
         this.folio_contrato = folio_contrato;
     }
 
-    public Integer getId_desc() {
-        return id_desc;
-    }
-
-    public void setId_desc(Integer id_desc) {
-        this.id_desc = id_desc;
-    }
-
     public Integer getId_m() {
         return id_m;
     }
 
     public void setId_m(Integer id_m) {
         this.id_m = id_m;
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+
+    public String getTiempo_transcurrido() {
+        return Tiempo_transcurrido;
+    }
+
+    public void setTiempo_transcurrido(String Tiempo_transcurrido) {
+        this.Tiempo_transcurrido = Tiempo_transcurrido;
+    }
+
+    public Integer getFolio_cliente() {
+        return folio_cliente;
+    }
+
+    public void setFolio_cliente(Integer folio_cliente) {
+        this.folio_cliente = folio_cliente;
+    }
+
+    public String getTipo_periodo() {
+        return tipo_periodo;
+    }
+
+    public void setTipo_periodo(String tipo_periodo) {
+        this.tipo_periodo = tipo_periodo;
+    }
+
+    public String getNombre_cliente() {
+        return nombre_cliente;
+    }
+
+    public void setNombre_cliente(String nombre_cliente) {
+        this.nombre_cliente = nombre_cliente;
     }
 }

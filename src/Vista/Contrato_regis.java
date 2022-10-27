@@ -32,8 +32,9 @@ public class Contrato_regis extends javax.swing.JPanel {
     int idconsumo;
     int idperiodo;
     String opcion;
-    private boolean edit;
+    String menu;
     int id;
+    boolean edit;
     String observaciones = "sin observaciones";
     ErrorsAndSuccesses es = new ErrorsAndSuccesses();
 
@@ -50,8 +51,8 @@ public class Contrato_regis extends javax.swing.JPanel {
             Municipio.setText(cliente.getMunicipio());
             Residencia.setText(cliente.getResidencia());
             Nombre_calle.setText(cliente.getNombreCalle());
-            Lote.setText(cliente.getNumeroLt());
-            Manzana.setText(cliente.getNumeroMzn());
+            Lote.setText(String.valueOf(cliente.getNumeroLt()));
+            Manzana.setText(String.valueOf(cliente.getNumeroMzn()));
         }
     }
 
@@ -60,6 +61,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         Cargando.setVisible(false);
         GetConsumo();
         GetPeriodo();
+        Folio.setText(String.valueOf(folio));
         this.ubicacion = ubicacion;
         this.folio = folio;
         nombre(folio);
@@ -67,21 +69,27 @@ public class Contrato_regis extends javax.swing.JPanel {
 
     public Contrato_regis(boolean edit, int folio, String ubicacion) {
         initComponents();
+        Tipo_c.setVisible(false);
+        Tipo_p.setVisible(false);
+        tarifa.setVisible(false);
+        Consumo.setVisible(false);
+        Periodo.setVisible(false);
+        Tarifa.setVisible(false);
         Cargando.setVisible(false);
         this.ubicacion = ubicacion;
         this.folio_ct = folio;
         this.edit = edit;
-        if (edit == true) {
-            Obtener(folio);
-            Contrato.setText("Modificar datos del contrato");
-            Registrar.setText("Guardar");
-        }
+        Obtener(folio);
+        Contrato.setText("Modificar datos del contrato");
+        Registrar.setText("Guardar");
+
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Cargando = new javax.swing.JLabel();
         Municipio = new javax.swing.JTextField();
         Consumo = new javax.swing.JComboBox<>();
         Periodo = new javax.swing.JComboBox<>();
@@ -93,6 +101,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         Manzana = new javax.swing.JTextField();
         Lote = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        Folio_c = new javax.swing.JLabel();
         Folio = new javax.swing.JLabel();
         Contrato = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -108,16 +117,27 @@ public class Contrato_regis extends javax.swing.JPanel {
         Regresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Observaciones = new javax.swing.JTextArea();
-        Cargando = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
+        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 500));
+
         Municipio.setBackground(new java.awt.Color(255, 255, 255));
         Municipio.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Municipio.setForeground(new java.awt.Color(0, 0, 0));
         Municipio.setText(" Municipio");
+        Municipio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                MunicipioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                MunicipioFocusLost(evt);
+            }
+        });
         Municipio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 MunicipioMousePressed(evt);
@@ -176,7 +196,7 @@ public class Contrato_regis extends javax.swing.JPanel {
                 PeriodoMousePressed(evt);
             }
         });
-        add(Periodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 160, 200, 40));
+        add(Periodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 260, 200, 40));
 
         jLabel9.setBackground(new java.awt.Color(0, 0, 0));
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -187,12 +207,20 @@ public class Contrato_regis extends javax.swing.JPanel {
         Tipo_p.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         Tipo_p.setForeground(new java.awt.Color(0, 0, 0));
         Tipo_p.setText("Periodo a pagar:");
-        add(Tipo_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 120, 150, 40));
+        add(Tipo_p, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 150, 40));
 
         Residencia.setBackground(new java.awt.Color(255, 255, 255));
         Residencia.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Residencia.setForeground(new java.awt.Color(0, 0, 0));
         Residencia.setText(" Col/barrio/fracc");
+        Residencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ResidenciaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ResidenciaFocusLost(evt);
+            }
+        });
         Residencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ResidenciaMousePressed(evt);
@@ -208,7 +236,15 @@ public class Contrato_regis extends javax.swing.JPanel {
         Nombre_calle.setBackground(new java.awt.Color(255, 255, 255));
         Nombre_calle.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Nombre_calle.setForeground(new java.awt.Color(0, 0, 0));
-        Nombre_calle.setText(" Nombre de la calle");
+        Nombre_calle.setText(" Calle");
+        Nombre_calle.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                Nombre_calleFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                Nombre_calleFocusLost(evt);
+            }
+        });
         Nombre_calle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Nombre_calleMousePressed(evt);
@@ -225,9 +261,22 @@ public class Contrato_regis extends javax.swing.JPanel {
         Referencia.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Referencia.setForeground(new java.awt.Color(0, 0, 0));
         Referencia.setText(" Calle de referencia");
+        Referencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ReferenciaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ReferenciaFocusLost(evt);
+            }
+        });
         Referencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ReferenciaMousePressed(evt);
+            }
+        });
+        Referencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReferenciaActionPerformed(evt);
             }
         });
         add(Referencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 70, 150, 40));
@@ -236,6 +285,14 @@ public class Contrato_regis extends javax.swing.JPanel {
         Manzana.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Manzana.setForeground(new java.awt.Color(0, 0, 0));
         Manzana.setText(" Num. Manz");
+        Manzana.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ManzanaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ManzanaFocusLost(evt);
+            }
+        });
         Manzana.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ManzanaMousePressed(evt);
@@ -252,6 +309,11 @@ public class Contrato_regis extends javax.swing.JPanel {
         Lote.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Lote.setForeground(new java.awt.Color(0, 0, 0));
         Lote.setText(" Num. Lt");
+        Lote.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LoteFocusGained(evt);
+            }
+        });
         Lote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 LoteMousePressed(evt);
@@ -265,9 +327,10 @@ public class Contrato_regis extends javax.swing.JPanel {
         add(Lote, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 90, 40));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 1030, 10));
 
-        Folio.setForeground(new java.awt.Color(0, 0, 0));
-        Folio.setText("Folio:");
-        add(Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, 30));
+        Folio_c.setForeground(new java.awt.Color(0, 0, 0));
+        Folio_c.setText("Folio del cliente:");
+        add(Folio_c, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
+        add(Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, 60, 30));
 
         Contrato.setBackground(new java.awt.Color(255, 255, 255));
         Contrato.setFont(new java.awt.Font("Roboto Light", 1, 18)); // NOI18N
@@ -279,7 +342,7 @@ public class Contrato_regis extends javax.swing.JPanel {
         jLabel11.setBackground(new java.awt.Color(0, 0, 0));
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel11.setText("Col/barrio/fracc:");
+        jLabel11.setText("Residencia:");
         add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 180, 20));
 
         jLabel12.setBackground(new java.awt.Color(0, 0, 0));
@@ -316,17 +379,17 @@ public class Contrato_regis extends javax.swing.JPanel {
         Tarifa.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Tarifa.setForeground(new java.awt.Color(0, 0, 0));
         Tarifa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        add(Tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 250, 160, 40));
+        add(Tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 160, 160, 40));
 
         tarifa.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tarifa.setForeground(new java.awt.Color(0, 0, 0));
         tarifa.setText("Tarifa:");
-        add(tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 110, 40));
+        add(tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 120, 110, 40));
 
         observacione.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         observacione.setForeground(new java.awt.Color(0, 0, 0));
         observacione.setText("Observaciones: (opcional)");
-        add(observacione, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 180, 30));
+        add(observacione, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 180, 40));
 
         Registrar.setBackground(new java.awt.Color(18, 90, 173));
         Registrar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -361,32 +424,10 @@ public class Contrato_regis extends javax.swing.JPanel {
         Observaciones.setRows(5);
         jScrollPane1.setViewportView(Observaciones);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 270, 100));
-
-        Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
-        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 500));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 270, 100));
     }// </editor-fold>//GEN-END:initComponents
 
     private void MunicipioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MunicipioMousePressed
-        if (Municipio.getText().equals(" Municipio")) {
-            Municipio.setText("");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Colonia");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de la calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
 
     }//GEN-LAST:event_MunicipioMousePressed
 
@@ -405,108 +446,23 @@ public class Contrato_regis extends javax.swing.JPanel {
     }//GEN-LAST:event_PeriodoMousePressed
 
     private void ResidenciaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ResidenciaMousePressed
-        if (Residencia.getText().equals(" Col/barrio/fracc")) {
-            Residencia.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de la calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
+
     }//GEN-LAST:event_ResidenciaMousePressed
 
     private void Nombre_calleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Nombre_calleMousePressed
-        if (Nombre_calle.getText().equals(" Nombre de la calle")) {
-            Nombre_calle.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Colonia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
+
     }//GEN-LAST:event_Nombre_calleMousePressed
 
     private void ManzanaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ManzanaMousePressed
-        if (Manzana.getText().equals(" Num. Manz")) {
-            Manzana.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Colonia");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de la calle");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
+
     }//GEN-LAST:event_ManzanaMousePressed
 
     private void LoteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoteMousePressed
-        if (Lote.getText().equals(" Num. Lt")) {
-            Lote.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Colonia");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de la calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
+
     }//GEN-LAST:event_LoteMousePressed
 
     private void ReferenciaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReferenciaMousePressed
-        if (Referencia.getText().equals(" Calle de referencia")) {
-            Referencia.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Colonia");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de la calle");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
+
     }//GEN-LAST:event_ReferenciaMousePressed
 
     private void MunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MunicipioKeyTyped
@@ -568,37 +524,59 @@ public class Contrato_regis extends javax.swing.JPanel {
     }//GEN-LAST:event_ConsumoItemStateChanged
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
-        if (edit == true) {
+        if (Observaciones.getText().isEmpty()) {
 
         } else {
-            if (Municipio.getText().equals(" Municipio") || Municipio.getText().isEmpty()
-                    || Residencia.getText().equals(" Col/barrio/fracc") || Residencia.getText().isEmpty()
-                    || Nombre_calle.getText().equals(" Nombre de la calle") || Nombre_calle.getText().isEmpty()
-                    || Referencia.getText().equals(" Calle de referencia") || Referencia.getText().isEmpty()
-                    || Manzana.getText().equals(" Num. Mazn") || Manzana.getText().isEmpty()
-                    || Lote.getText().equals(" Num. Lt") || Lote.getText().isEmpty()
-                    || Consumo.getSelectedItem().equals("Selecciona una opcion") || Periodo.getSelectedItem().equals("Selecciona una opcion")
-                    || Tarifa.getSelectedItem().equals("Selecciona una opcion")) {
-                JOptionPane.showMessageDialog(this, "Campos vacios", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            observaciones = Observaciones.getText();
+        }
+
+        if (Municipio.getText().equals(" Municipio") || Municipio.getText().isEmpty()) {
+            Municipio.requestFocus();
+            JOptionPane.showMessageDialog(null, "Campo vacio: Municipio", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (Residencia.getText().equals(" Col/barrio/fracc") || Residencia.getText().isEmpty()) {
+                Residencia.requestFocus();
+                JOptionPane.showMessageDialog(null, "Campo vacio: Residencia", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                if(Observaciones.getText().isEmpty()){
-                    
-                }else{
-                    observaciones = Observaciones.getText();
-                }
-                InsertarContrato(folio);
-                if (es.getResultinsert() == -1) {
-                    JOptionPane.showMessageDialog(this, "Hubo un error", "Error", JOptionPane.INFORMATION_MESSAGE);
+                if (Nombre_calle.getText().equals(" Calle") || Nombre_calle.getText().isEmpty()) {
+                    Nombre_calle.requestFocus();
+                    JOptionPane.showMessageDialog(null, "Campo vacio: Calle", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Contrato creado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                    Contrato_generado cg = new Contrato_generado(folio, es.getResultinsert());
-                    Generar_contrato gc = new Generar_contrato("");
-                    gc.setSize(1030, 500);
-                    gc.setLocation(0, 0);
-                    content.removeAll();
-                    content.add(gc, BorderLayout.CENTER);
-                    content.revalidate();
-                    content.repaint();
+                    if (Referencia.getText().equals(" Calle de referencia") || Referencia.getText().isEmpty()) {
+                        Referencia.requestFocus();
+                        JOptionPane.showMessageDialog(null, "Campo vacio: Calle de referencia", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        if (Manzana.getText().equals(" Num. Manz") || Manzana.getText().isEmpty()) {
+                            Manzana.requestFocus();
+                            JOptionPane.showMessageDialog(null, "Campo vacio: Manzana", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            if (Lote.getText().equals(" Num. Lt") || Lote.getText().isEmpty()) {
+                                Lote.requestFocus();
+                                JOptionPane.showMessageDialog(null, "Campo vacio:Lote", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                if (edit == true) {
+                                    new Hilos().show();
+                                } else {
+                                    if (Consumo.getSelectedItem().equals("Selecciona una opción")) {
+                                        Consumo.requestFocus();
+                                        JOptionPane.showMessageDialog(null, "Campo vacio: Tipo de consumo", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                                    } else {
+                                        if (Periodo.getSelectedItem().equals("Selecciona una opción")) {
+                                            Periodo.requestFocus();
+                                            JOptionPane.showMessageDialog(null, "Campo vacio: Periodo de pago", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                                        } else {
+                                            if (Tarifa.getSelectedItem().equals("Selecciona una opción")) {
+                                                Tarifa.requestFocus();
+                                                JOptionPane.showMessageDialog(null, "Campo vacio: Tarifa", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                                            } else {
+                                                new Hilos().show();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -629,6 +607,76 @@ public class Contrato_regis extends javax.swing.JPanel {
             content.repaint();
         }
     }//GEN-LAST:event_RegresarActionPerformed
+
+    private void MunicipioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MunicipioFocusGained
+        if (Municipio.getText().equals(" Municipio")) {
+            Municipio.setText("");
+        }
+    }//GEN-LAST:event_MunicipioFocusGained
+
+    private void MunicipioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MunicipioFocusLost
+        if (Municipio.getText().isEmpty()) {
+            Municipio.setText(" Municipio");
+        }
+    }//GEN-LAST:event_MunicipioFocusLost
+
+    private void ResidenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ResidenciaFocusGained
+        if (Residencia.getText().equals(" Col/barrio/fracc")) {
+            Residencia.setText("");
+        }
+    }//GEN-LAST:event_ResidenciaFocusGained
+
+    private void ResidenciaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ResidenciaFocusLost
+        if (Residencia.getText().isEmpty()) {
+            Residencia.setText(" Col/barrio/fracc");
+        }
+    }//GEN-LAST:event_ResidenciaFocusLost
+
+    private void Nombre_calleFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Nombre_calleFocusGained
+        if (Nombre_calle.getText().equals(" Calle")) {
+            Nombre_calle.setText("");
+        }
+    }//GEN-LAST:event_Nombre_calleFocusGained
+
+    private void Nombre_calleFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Nombre_calleFocusLost
+        if (Nombre_calle.getText().isEmpty()) {
+            Nombre_calle.setText(" Calle");
+        }
+    }//GEN-LAST:event_Nombre_calleFocusLost
+
+    private void ReferenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ReferenciaFocusGained
+        if (Referencia.getText().equals(" Calle de referencia")) {
+            Referencia.setText("");
+        }
+    }//GEN-LAST:event_ReferenciaFocusGained
+
+    private void ReferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReferenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ReferenciaActionPerformed
+
+    private void ReferenciaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ReferenciaFocusLost
+        if (Referencia.getText().isEmpty()) {
+            Referencia.setText(" Calle de referencia");
+        }
+    }//GEN-LAST:event_ReferenciaFocusLost
+
+    private void ManzanaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ManzanaFocusGained
+        if (Manzana.getText().equals(" Num. Manz")) {
+            Manzana.setText("");
+        }
+    }//GEN-LAST:event_ManzanaFocusGained
+
+    private void ManzanaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ManzanaFocusLost
+        if (Manzana.getText().isEmpty()) {
+            Manzana.setText(" Num. Manz");
+        }
+    }//GEN-LAST:event_ManzanaFocusLost
+
+    private void LoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoteFocusGained
+        if (Lote.getText().equals(" Num. Lt")) {
+            Lote.setText("");
+        }
+    }//GEN-LAST:event_LoteFocusGained
     public class Tari implements Runnable {
 
         public void show() {
@@ -639,6 +687,24 @@ public class Contrato_regis extends javax.swing.JPanel {
         public void run() {
             GetIdconsumo();
             GetTarifa(idconsumo);
+        }
+    }
+
+    public class Hilos implements Runnable {
+
+        public void show() {
+            new Thread(this).start();
+        }
+
+        public void run() {
+            Cargando.setVisible(true);
+            if (Registrar.getText().equals("Registrar")) {
+                InsertarContrato(folio);
+            }
+            if (Registrar.getText().equals("Guardar")) {
+                actualizar();
+                Cargando.setVisible(false);
+            }
         }
     }
 
@@ -676,14 +742,28 @@ public class Contrato_regis extends javax.swing.JPanel {
 
     public void InsertarContrato(int folio) {
         GetIdperiodo();
+        GetTarifaid();
         ContratoServicio cs = new ContratoServicio();
         String status = "activo";
-        GetTarifaid();
+
         Contrato_generado cg = new Contrato_generado();
         cg.setDireccion(Municipio.getText() + "," + Residencia.getText() + "," + Nombre_calle.getText());
         cg.setManzana(Manzana.getText());
         cg.setLote(Lote.getText());
         es.setResultinsert(cs.InsertarContrato(Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), observaciones, Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), id, idconsumo, idperiodo, folio, status));
+        if (es.getResultinsert() == -1) {
+            JOptionPane.showMessageDialog(null, "Hubo un error", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Contrato creado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            cg = new Contrato_generado(folio, es.getResultinsert());
+            Generar_contrato gc = new Generar_contrato("null");
+            gc.setSize(1030, 500);
+            gc.setLocation(0, 0);
+            content.removeAll();
+            content.add(gc, BorderLayout.CENTER);
+            content.revalidate();
+            content.repaint();
+        }
     }
 
     private void entrada(KeyEvent evt) {
@@ -720,7 +800,6 @@ public class Contrato_regis extends javax.swing.JPanel {
         for (int i = 0; i < tam; i++) {
 
             Tarifa.addItem(lista.get(i).getTarifa().toString());
-            Folio.setText(lista.get(i).getConsec().toString());
 
         }
     }
@@ -741,20 +820,20 @@ public class Contrato_regis extends javax.swing.JPanel {
             Referencia.setText(lista.get(i).getCalleReferencia());
             Manzana.setText(lista.get(i).getNumeroMzn().toString());
             Lote.setText(lista.get(i).getNumeroLt().toString());
-            Consumo.removeAllItems();
-            Periodo.removeAllItems();
-            Tarifa.removeAllItems();
-            Consumo.addItem(lista.get(i).getId_consumo().toString());
-            Periodo.addItem(lista.get(i).getId_periodo().toString());
             Observaciones.setText(lista.get(i).getObservaciones());
-            Tarifa.addItem(lista.get(i).getConsec().toString());
             Folio.setText(lista.get(i).getFolio_cte().toString());
         }
     }
-    
+
     private void actualizar() {
         ContratoServicio cs = new ContratoServicio();
-        es.setResultact(cs.ActualizarContrato(folio_ct, Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Observaciones.getText(), Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), id, idconsumo, idperiodo));
+        es.setResultact(cs.ActualizarContrato(folio_ct, Municipio.getText(), Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), observaciones, Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText())));
+        System.out.println(es.getResultact());
+        if (es.getResultact() == -1) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el contrato", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Contrato actualizado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void nombre(int folio) {
@@ -764,7 +843,6 @@ public class Contrato_regis extends javax.swing.JPanel {
         Contrato_generado cg = new Contrato_generado();
         for (int i = 0; i < tam; i++) {
             cg.setNombre_cliente(lista.get(i).getNombre() + " " + lista.get(i).getApellido_p() + " " + lista.get(i).getApellido_m());
-            System.out.println(cg.getNombre_cliente());
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -772,6 +850,7 @@ public class Contrato_regis extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> Consumo;
     private javax.swing.JLabel Contrato;
     private javax.swing.JLabel Folio;
+    private javax.swing.JLabel Folio_c;
     private javax.swing.JTextField Lote;
     private javax.swing.JTextField Manzana;
     private javax.swing.JTextField Municipio;

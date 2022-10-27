@@ -37,8 +37,8 @@ public class ClienteDao {
             comando.setString(11, cliente.getResidencia());
             comando.setString(12, cliente.getNombreCalle());
             comando.setString(13, cliente.getCalleReferencia());
-            comando.setString(14, cliente.getNumeroMzn());
-            comando.setString(15, cliente.getNumeroLt());
+            comando.setInt(14, cliente.getNumeroMzn());
+            comando.setInt(15, cliente.getNumeroLt());
             comando.setString(16, cliente.getStatus());
             
             
@@ -54,6 +54,7 @@ public class ClienteDao {
             
             return id;
         } catch (SQLException e) {
+            System.out.println(""+e.getSQLState());
             System.out.println(""+e.getMessage());
             return -1;
         }
@@ -68,7 +69,7 @@ public class ClienteDao {
                 + "numero_mzn = ?,numero_lt = ?"
                 + "where folio_cte = ?";
         PreparedStatement comando = null;
-
+        
         try {
             comando = conexion.conectar().prepareStatement(sql);
             comando.setString(1, cliente.getNombre());
@@ -84,10 +85,10 @@ public class ClienteDao {
             comando.setString(11, cliente.getResidencia());
             comando.setString(12, cliente.getNombreCalle());
             comando.setString(13, cliente.getCalleReferencia());
-            comando.setString(14, cliente.getNumeroMzn());
-            comando.setString(15, cliente.getNumeroLt());
+            comando.setInt(14, cliente.getNumeroMzn());
+            comando.setInt(15, cliente.getNumeroLt());
             comando.setInt(16, cliente.getFolio());
-            
+            System.out.println("comando:" +comando);
             comando.executeUpdate();
             
             conexion.conectar().close();
@@ -95,7 +96,7 @@ public class ClienteDao {
             
             ret = 1;
         } catch (SQLException e) {
-            System.out.println(""+e);
+            System.out.println("Actualizar: "+e);
             ret = -1;
         }
         return ret;
@@ -180,8 +181,8 @@ public class ClienteDao {
                 cl.setResidencia(Resultado.getString("residencia"));
                 cl.setNombreCalle(Resultado.getString("nombre_calle"));
                 cl.setCalleReferencia(Resultado.getString("calle_referencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 cl.setStatus(Resultado.getString("status"));
                 lista.add(cl);
             }
@@ -214,8 +215,8 @@ public class ClienteDao {
                 cl.setApellido_m(Resultado.getString("apellido_m"));
                 cl.setFecha_nac(Resultado.getDate("fecha_nac"));
                 cl.setResidencia(Resultado.getString("residencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 lista.add(cl);
             }
             conexion.conectar().close();
@@ -230,10 +231,12 @@ public class ClienteDao {
     public List<Cliente>Pagocl_contrato(int folio){
         List<Cliente> lista = new ArrayList<>();
         
-        String sql = "select cl.folio_cte,cl.nombre, cl.apellido_p, cl.apellido_m,cl.celular,ct.municipio,ct.residencia,ct.numero_mzn,ct.numero_lt,ct.deuda "
+        String sql = "select tc.tipo_consumo,cl.folio_cte,cl.nombre, cl.apellido_p, cl.apellido_m,cl.celular,ct.municipio,ct.residencia,ct.numero_mzn,ct.numero_lt,ct.deuda "
                 + "from contrato ct "
                 + "inner join cliente cl "
                 + "on cl.folio_cte = ct.folio_cte "
+                + "inner join cat_consumo tc "
+                + "on tc.id_consumo = ct.id_consumo "
                 + "where ct.folio_contrato = ? and cl.status = 'activo' ";
         PreparedStatement comando = null;
         
@@ -243,6 +246,7 @@ public class ClienteDao {
             Resultado = comando.executeQuery();
             while(Resultado.next()){
                 Cliente cl = new Cliente();
+                cl.setConsumo(Resultado.getString("tipo_consumo"));
                 cl.setFolio(Resultado.getInt("folio_cte"));
                 cl.setNombre(Resultado.getString("nombre"));
                 cl.setApellido_p(Resultado.getString("apellido_p"));
@@ -250,8 +254,8 @@ public class ClienteDao {
                 cl.setCelular(Resultado.getString("celular"));
                 cl.setMunicipio(Resultado.getString("municipio"));
                 cl.setResidencia(Resultado.getString("residencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 cl.setDeuda(Resultado.getDouble("deuda"));
                 lista.add(cl);
             }
@@ -287,8 +291,8 @@ public class ClienteDao {
                 cl.setCelular(Resultado.getString("celular"));
                 cl.setMunicipio(Resultado.getString("municipio"));
                 cl.setResidencia(Resultado.getString("residencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 cl.setDeuda(Resultado.getDouble("deuda"));
                 lista.add(cl);
             }
@@ -325,8 +329,8 @@ public class ClienteDao {
                 cl.setTelefono(Resultado.getString("telefono"));
                 cl.setMunicipio(Resultado.getString("municipio"));
                 cl.setResidencia(Resultado.getString("residencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 cl.setDeuda(Resultado.getDouble("deuda"));
                 lista.add(cl);
             }
@@ -362,8 +366,8 @@ public class ClienteDao {
                 cl.setCelular(Resultado.getString("celular"));
                 cl.setMunicipio(Resultado.getString("municipio"));
                 cl.setResidencia(Resultado.getString("residencia"));
-                cl.setNumeroMzn(Resultado.getString("numero_mzn"));
-                cl.setNumeroLt(Resultado.getString("numero_lt"));
+                cl.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                cl.setNumeroLt(Resultado.getInt("numero_lt"));
                 cl.setDeuda(Resultado.getDouble("deuda"));
                 lista.add(cl);
             }

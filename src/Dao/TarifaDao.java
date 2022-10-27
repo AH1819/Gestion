@@ -17,7 +17,7 @@ public class TarifaDao {
     public List<DetTipoconsumoTarifa> Tarifas(int id){
         List<DetTipoconsumoTarifa> tari = new ArrayList<>();
         
-        String sql = "select consec,tarifa from det_tipoconsumo_tarifa where id_consumo = ? order by id_consumo";
+        String sql = "select * from det_tipoconsumo_tarifa where id_consumo = ? order by id_consumo";
         PreparedStatement comando = null;
         
         try {
@@ -28,6 +28,7 @@ public class TarifaDao {
             while (Resultado.next()) {
                 DetTipoconsumoTarifa dt = new DetTipoconsumoTarifa();
                 dt.setConsec(Resultado.getInt("consec"));
+                dt.setId_consumo(Resultado.getInt("id_consumo"));
                 dt.setTarifa(Resultado.getDouble("tarifa"));
                 tari.add(dt);
             }

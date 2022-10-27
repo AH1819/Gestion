@@ -186,7 +186,7 @@ public class Contrato {
         this.status = status;
     }
 
-    public Contrato(Integer folioContrato, String municipio, String residencia, String nombreCalle, String calleReferencia, String observaciones, Integer numeroMzn, Integer numeroLt, Integer consec, Integer id_consumo, Integer id_periodo) {
+    public Contrato(Integer folioContrato, String municipio, String residencia, String nombreCalle, String calleReferencia, String observaciones, Integer numeroMzn, Integer numeroLt) {
         this.folioContrato = folioContrato;
         this.municipio = municipio;
         this.residencia = residencia;
@@ -195,9 +195,6 @@ public class Contrato {
         this.observaciones = observaciones;
         this.numeroMzn = numeroMzn;
         this.numeroLt = numeroLt;
-        this.consec = consec;
-        this.id_consumo = id_consumo;
-        this.id_periodo = id_periodo;
     }
 
     public String getNombre() {

@@ -50,7 +50,8 @@ public class Cat_descuento {
         this.porcentaje = porcentaje;
     }
 
-    public Cat_descuento(Date fecha_inc, Date fecha_fin, String descripcion, Double porcentaje) {
+    public Cat_descuento(Integer id_desc, Date fecha_inc, Date fecha_fin, String descripcion, Double porcentaje) {
+        this.id_desc = id_desc;
         this.fecha_inc = fecha_inc;
         this.fecha_fin = fecha_fin;
         this.descripcion = descripcion;

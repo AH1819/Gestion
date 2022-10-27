@@ -1,6 +1,8 @@
 package Vista;
 
 import Entity.Contrato;
+import Entity.Contrato_generado;
+import Entity.ErrorsAndSuccesses;
 import Servicio.ContratoServicio;
 import static Vista.Interfaz2.content;
 import java.awt.BorderLayout;
@@ -9,20 +11,26 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import org.greenrobot.eventbus.Subscribe;
 
 public class Contrato_v extends javax.swing.JPanel {
 
     String opcion;
+    ErrorsAndSuccesses es = new ErrorsAndSuccesses();
 
     public Contrato_v() {
         initComponents();
+        es.setUbicacion("contrato");
         espera.setVisible(false);
         esperabusqueda.setVisible(false);
+        esperareimprimir.setVisible(false);
         new MostrarC().show();
         Mostrar.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent evt) {
                 JTable table = (JTable) evt.getSource();
                 Point point = evt.getPoint();
@@ -56,6 +64,7 @@ public class Contrato_v extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToolBar1 = new javax.swing.JToolBar();
         jScrollPane2 = new javax.swing.JScrollPane();
         Mostrar = new javax.swing.JTable();
         Title = new javax.swing.JLabel();
@@ -65,9 +74,13 @@ public class Contrato_v extends javax.swing.JPanel {
         Nuevo = new javax.swing.JButton();
         Edit = new javax.swing.JButton();
         Delete = new javax.swing.JButton();
-        esperabusqueda = new javax.swing.JLabel();
-        espera = new javax.swing.JLabel();
         Cargando = new javax.swing.JLabel();
+        espera = new javax.swing.JLabel();
+        esperabusqueda = new javax.swing.JLabel();
+        Reimprimir = new javax.swing.JButton();
+        esperareimprimir = new javax.swing.JLabel();
+
+        jToolBar1.setRollover(true);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -97,11 +110,11 @@ public class Contrato_v extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(Mostrar);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1030, 330));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1030, 340));
 
         Title.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Title.setText("Contratos");
-        add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
+        add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         usrnm.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         usrnm.setForeground(new java.awt.Color(102, 102, 102));
@@ -115,8 +128,8 @@ public class Contrato_v extends javax.swing.JPanel {
                 usrnmMouseReleased(evt);
             }
         });
-        add(usrnm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 620, 30));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 620, 10));
+        add(usrnm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 620, 30));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 620, 10));
 
         Buscar.setBackground(new java.awt.Color(18, 90, 173));
         Buscar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -128,19 +141,27 @@ public class Contrato_v extends javax.swing.JPanel {
                 BuscarActionPerformed(evt);
             }
         });
-        add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 30, 80, 30));
+        add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 40, 80, 30));
 
         Nuevo.setBackground(new java.awt.Color(18, 90, 173));
         Nuevo.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         Nuevo.setForeground(new java.awt.Color(255, 255, 255));
         Nuevo.setText("Nuevo");
         Nuevo.setBorder(null);
+        Nuevo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                NuevoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                NuevoMouseExited(evt);
+            }
+        });
         Nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NuevoActionPerformed(evt);
             }
         });
-        add(Nuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 420, 80, 30));
+        add(Nuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 450, 80, 30));
 
         Edit.setBackground(new java.awt.Color(18, 90, 173));
         Edit.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -153,7 +174,7 @@ public class Contrato_v extends javax.swing.JPanel {
                 EditActionPerformed(evt);
             }
         });
-        add(Edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 420, 80, 30));
+        add(Edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, 80, 30));
 
         Delete.setBackground(new java.awt.Color(18, 90, 173));
         Delete.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -166,17 +187,36 @@ public class Contrato_v extends javax.swing.JPanel {
                 DeleteActionPerformed(evt);
             }
         });
-        add(Delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 420, 80, 30));
-
-        esperabusqueda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
-        add(esperabusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, 50, 50));
-
-        espera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
-        add(espera, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 410, 50, 50));
+        add(Delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 450, 80, 30));
 
         Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
-        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 480));
+        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1030, 340));
+
+        espera.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(espera, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 440, 70, 50));
+
+        esperabusqueda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        esperabusqueda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(esperabusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 30, 70, 50));
+
+        Reimprimir.setBackground(new java.awt.Color(18, 90, 173));
+        Reimprimir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Reimprimir.setForeground(new java.awt.Color(255, 255, 255));
+        Reimprimir.setText("Reimprimir contrato");
+        Reimprimir.setBorder(null);
+        Reimprimir.setEnabled(false);
+        Reimprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReimprimirActionPerformed(evt);
+            }
+        });
+        add(Reimprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 150, 30));
+
+        esperareimprimir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        esperareimprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cargando (1).gif"))); // NOI18N
+        add(esperareimprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, 70, 50));
     }// </editor-fold>//GEN-END:initComponents
 
     private void MostrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MostrarMousePressed
@@ -205,15 +245,8 @@ public class Contrato_v extends javax.swing.JPanel {
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
-        /*
-        Contrato_regis p1 = new Contrato_regis("contrato");
-        p1.setSize(1030, 479);
-        p1.setLocation(0, 0);
-
-        content.removeAll();
-        content.add(p1, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();*/
+        Cliente_new_or_exist cn = new Cliente_new_or_exist();
+        cn.setVisible(true);
     }//GEN-LAST:event_NuevoActionPerformed
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
@@ -225,6 +258,20 @@ public class Contrato_v extends javax.swing.JPanel {
         opcion = "Baja contrato";
         new Hilos().show();
     }//GEN-LAST:event_DeleteActionPerformed
+
+    private void ReimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReimprimirActionPerformed
+        opcion = "Reimprimir contrato";
+        new Hilos().show();
+
+    }//GEN-LAST:event_ReimprimirActionPerformed
+
+    private void NuevoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NuevoMouseEntered
+        setColor(Nuevo);
+    }//GEN-LAST:event_NuevoMouseEntered
+
+    private void NuevoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NuevoMouseExited
+        resetColor(Nuevo);
+    }//GEN-LAST:event_NuevoMouseExited
 
     public class Hilos implements Runnable {
 
@@ -238,16 +285,31 @@ public class Contrato_v extends javax.swing.JPanel {
                 espera.setVisible(true);
                 Editar();
             }
+            if (opcion.equals("Registrar cliente")) {
+                espera.setVisible(true);
+                Registrar();
+            }
+            if (opcion.equals("Registrar contrato")) {
+                espera.setVisible(true);
+                NewContrato();
+            }
             if (opcion.equals("Baja contrato")) {
                 espera.setVisible(true);
                 Baja();
+                DefaultTableModel modelo = (DefaultTableModel) Mostrar.getModel();
+                modelo.removeRow(Mostrar.getSelectedRow());
                 espera.setVisible(false);
-                new MostrarC().show();
             }
             if (opcion.equals("Buscar contrato")) {
                 esperabusqueda.setVisible(true);
                 Buscar();
                 esperabusqueda.setVisible(false);
+            }
+            if (opcion.equals("Reimprimir contrato")) {
+                esperareimprimir.setVisible(true);
+                Generar_contrato();
+                esperareimprimir.setVisible(false);
+
             }
         }
 
@@ -261,29 +323,40 @@ public class Contrato_v extends javax.swing.JPanel {
 
         @Override
         public void run() {
-            Title.setVisible(false);
-            usrnm.setVisible(false);
-            Buscar.setVisible(false);
             Mostrar.setVisible(false);
             jScrollPane2.setVisible(false);
-            Nuevo.setVisible(false);
-            Edit.setVisible(false);
-            Delete.setVisible(false);
-            Edit.setVisible(false);
-            jSeparator1.setVisible(false);
             Cargando.setVisible(true);
             GetContratos();
             Cargando.setVisible(false);
-            Title.setVisible(true);
-            usrnm.setVisible(true);
-            Buscar.setVisible(true);
             Mostrar.setVisible(true);
             jScrollPane2.setVisible(true);
-            Nuevo.setVisible(true);
-            Edit.setVisible(true);
-            Delete.setVisible(true);
-            Edit.setVisible(true);
-            jSeparator1.setVisible(true);
+        }
+    }
+
+    private void Generar_contrato() {
+        ContratoServicio cs = new ContratoServicio();
+        List<Contrato> lista = cs.Generarcontrato(Integer.parseInt(usrnm.getText()));
+        int tam = lista.size();
+        Contrato_generado cg = new Contrato_generado();
+        if (tam > 0) {
+            for (int i = 0; i < tam; i++) {
+                cg.setFolio_contrato(lista.get(i).getFolioContrato());
+                cg.setFolio_cliente(lista.get(i).getFolio_cte());
+                cg.setNombre_cliente(lista.get(i).getNombre());
+                cg.setDireccion(lista.get(i).getMunicipio() + ", " + lista.get(i).getResidencia() + ", " + lista.get(i).getNombreCalle());
+                cg.setManzana(lista.get(i).getNumeroMzn().toString());
+                cg.setLote(lista.get(i).getNumeroLt().toString());
+            }
+            Generar_contrato gc = new Generar_contrato("null");
+            gc.setSize(1030, 479);
+            gc.setLocation(0, 0);
+
+            content.removeAll();
+            content.add(gc, BorderLayout.CENTER);
+            content.revalidate();
+            content.repaint();
+        } else {
+            JOptionPane.showMessageDialog(null, "Hubo un error en la ejecucion", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -332,6 +405,28 @@ public class Contrato_v extends javax.swing.JPanel {
             Mostrar.getColumnModel().getColumn(5).setPreferredWidth(20);
             Mostrar.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
+    }
+
+    private void Registrar() {
+        InsertCl p1 = new InsertCl("contrato");
+        p1.setSize(1030, 479);
+        p1.setLocation(0, 0);
+
+        content.removeAll();
+        content.add(p1, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }
+
+    private void NewContrato() {
+        Contrato_regis p1 = new Contrato_regis(Integer.parseInt(usrnm.getText()), "contrato");
+        p1.setSize(1030, 479);
+        p1.setLocation(0, 0);
+
+        content.removeAll();
+        content.add(p1, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
     }
 
     private void Baja() {
@@ -398,12 +493,12 @@ public class Contrato_v extends javax.swing.JPanel {
         }
     }
 
-    void setColor(JPanel panel) {
-        panel.setBackground(new Color(21, 101, 192));
+    void setColor(JButton boton) {
+        boton.setBackground(new Color(21, 101, 192));
     }
 
-    void resetColor(JPanel panel) {
-        panel.setBackground(new Color(18, 90, 173));
+    void resetColor(JButton boton) {
+        boton.setBackground(new Color(18, 90, 173));
     }
 
     private void Vali() {
@@ -413,7 +508,21 @@ public class Contrato_v extends javax.swing.JPanel {
         } else {
             Edit.setEnabled(true);
             Delete.setEnabled(true);
+            Reimprimir.setEnabled(true);
         }
+    }
+
+    @Subscribe
+    public void Transporte(String numero) {
+        if (numero.equals("0")) {
+            opcion = "Registrar cliente";
+            new Hilos().show();
+        } else {
+            usrnm.setText(numero);
+            opcion = "Registrar contrato";
+            new Hilos().show();
+        }
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
@@ -422,11 +531,14 @@ public class Contrato_v extends javax.swing.JPanel {
     private javax.swing.JButton Edit;
     private javax.swing.JTable Mostrar;
     private javax.swing.JButton Nuevo;
+    private javax.swing.JButton Reimprimir;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel espera;
     private javax.swing.JLabel esperabusqueda;
+    private javax.swing.JLabel esperareimprimir;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField usrnm;
     // End of variables declaration//GEN-END:variables
 }

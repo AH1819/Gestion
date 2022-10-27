@@ -4,8 +4,6 @@ import Entity.Cliente;
 import Entity.Contrato;
 import Servicio.ClienteServicio;
 import Servicio.ContratoServicio;
-import static Vista.Interfaz2.content;
-import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,6 +22,8 @@ public class ContratosC extends javax.swing.JDialog {
         Folio.setVisible(false);
         this.setLocationRelativeTo(null);
         if (ubicacion.equals("contrato")) {
+            nombre.setVisible(false);
+            Nombre.setVisible(false);
             ClientesC(folio);
         } else {
             ContratosC(folio);
@@ -67,6 +67,8 @@ public class ContratosC extends javax.swing.JDialog {
         Mostrar = new javax.swing.JTable();
         Folio = new javax.swing.JTextField();
         Cerrar = new javax.swing.JButton();
+        Nombre = new javax.swing.JLabel();
+        nombre = new javax.swing.JLabel();
         Error = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -110,7 +112,11 @@ public class ContratosC extends javax.swing.JDialog {
                 CerrarKeyTyped(evt);
             }
         });
-        jPanel1.add(Cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(285, 131, -1, -1));
+        jPanel1.add(Cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, -1, -1));
+        jPanel1.add(Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 230, 20));
+
+        nombre.setText("Nombre:");
+        jPanel1.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, 20));
 
         Error.setBackground(new java.awt.Color(255, 255, 255));
         Error.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -136,14 +142,7 @@ Cliente cl = new Cliente();
     private void CerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarActionPerformed
         cerrar = 1;
         if (Cerrar.getText().equals("Aceptar")) {
-            Pago pg = new Pago(Folio.getText());
-            pg.setSize(1030, 500);
-            pg.setLocation(0, 0);
-
-            content.removeAll();
-            content.add(pg, BorderLayout.CENTER);
-            content.revalidate();
-            content.repaint();
+            Interfaz2.eventos.post(Folio.getText());
             this.dispose();
         } else {
             this.dispose();
@@ -181,6 +180,7 @@ Cliente cl = new Cliente();
                 list[i][4] = lista.get(i).getNumeroLt().toString();
                 list[i][5] = lista.get(i).getDeuda().toString();
                 list[i][6] = lista.get(i).getStatus();
+                Nombre.setText(lista.get(i).getNombre());
             }
             Mostrar.setModel(new javax.swing.table.DefaultTableModel(
                     list,
@@ -206,8 +206,8 @@ Cliente cl = new Cliente();
                 list[i][1] = lista.get(i).getNombre() + " " + lista.get(i).getApellido_p() + " " + lista.get(i).getApellido_m();
                 list[i][2] = lista.get(i).getResidencia();
                 list[i][3] = lista.get(i).getFecha_nac().toString();
-                list[i][4] = lista.get(i).getNumeroMzn();
-                list[i][5] = lista.get(i).getNumeroLt();
+                list[i][4] = String.valueOf(lista.get(i).getNumeroMzn());
+                list[i][5] = String.valueOf(lista.get(i).getNumeroLt());
             }
             Mostrar.setModel(new javax.swing.table.DefaultTableModel(
                     list,
@@ -238,8 +238,10 @@ Cliente cl = new Cliente();
     private javax.swing.JLabel Error;
     private javax.swing.JTextField Folio;
     private javax.swing.JTable Mostrar;
+    private javax.swing.JLabel Nombre;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel nombre;
     // End of variables declaration//GEN-END:variables
 
 }

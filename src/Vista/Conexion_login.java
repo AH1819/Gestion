@@ -180,6 +180,7 @@ public class Conexion_login extends javax.swing.JFrame {
         Conectar.setForeground(new java.awt.Color(255, 255, 255));
         Conectar.setText("Probar Conexion");
         Conectar.setBorder(null);
+        Conectar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Conectar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConectarActionPerformed(evt);
@@ -192,6 +193,7 @@ public class Conexion_login extends javax.swing.JFrame {
         Save.setForeground(new java.awt.Color(255, 255, 255));
         Save.setText("Guardar Configuracion");
         Save.setBorder(null);
+        Save.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveActionPerformed(evt);
@@ -467,7 +469,7 @@ public class Conexion_login extends javax.swing.JFrame {
             Error_con.setVisible(false);
             Error.setVisible(true);
             Error.setText("Conexion exitosa");
-            Error.setForeground(Color.GREEN);
+            Error.setForeground(Color.BLACK);
         } else {
             Error_con.setVisible(true);
             Error_con.setText(er.getErrorconexion());

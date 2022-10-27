@@ -12,16 +12,17 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.util.regex.Pattern;
 
 public class InsertCl extends javax.swing.JPanel {
 
-    boolean editar;
     String ubicacion;
     int folio;
     int folio_cte;
-    String rfco = "NNNN000000NN0";
-    String telefonoo = "Sin numero";
-    String emailo = "Sin email";
+    String rfco = "";
+    String telefonoo = "";
+    String emailo = "";
+    String Curpo = "";
 
     ErrorsAndSuccesses es = new ErrorsAndSuccesses();
 
@@ -34,24 +35,23 @@ public class InsertCl extends javax.swing.JPanel {
         es.setUbicacion(ventana);
     }
 
-    public InsertCl(boolean edit, int folio, String ubicacion) {
+    public InsertCl(int folio, String ubicacion) {
         initComponents();
         Cargando.setVisible(false);
-        this.editar = edit;
         this.ubicacion = ubicacion;
         this.folio = folio;
         es.setUbicacion(ubicacion);
-        if (editar == true) {
-            Obtener(folio);
-            Cliente_Datos.setText("Modificar datos de cliente");
-            Next_or_New.setText("Guardar");
-        }
+        Obtener(folio);
+        Cliente_Datos.setText("Modificar datos de cliente");
+        Next_or_save.setText("Guardar");
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Cargando = new javax.swing.JLabel();
+        Celular = new javax.swing.JTextField();
         nombre = new javax.swing.JLabel();
         apm = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
@@ -75,10 +75,9 @@ public class InsertCl extends javax.swing.JPanel {
         guion = new javax.swing.JLabel();
         Email = new javax.swing.JTextField();
         email = new javax.swing.JLabel();
-        Celular = new javax.swing.JTextField();
         celular = new javax.swing.JLabel();
         curp = new javax.swing.JLabel();
-        Next_or_New = new javax.swing.JButton();
+        Next_or_save = new javax.swing.JButton();
         Curp = new javax.swing.JTextField();
         Cancelar = new javax.swing.JButton();
         Separador2 = new javax.swing.JSeparator();
@@ -94,10 +93,40 @@ public class InsertCl extends javax.swing.JPanel {
         Lote = new javax.swing.JTextField();
         manzana = new javax.swing.JLabel();
         lote = new javax.swing.JLabel();
-        Cargando = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
+        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 500));
+
+        Celular.setBackground(new java.awt.Color(255, 255, 255));
+        Celular.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        Celular.setForeground(new java.awt.Color(0, 0, 0));
+        Celular.setText(" Numero de celular");
+        Celular.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                CelularFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                CelularFocusLost(evt);
+            }
+        });
+        Celular.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                CelularMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CelularMousePressed(evt);
+            }
+        });
+        Celular.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CelularKeyTyped(evt);
+            }
+        });
+        add(Celular, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 150, 180, 40));
 
         nombre.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         nombre.setForeground(new java.awt.Color(0, 0, 0));
@@ -122,7 +151,15 @@ public class InsertCl extends javax.swing.JPanel {
         name.setBackground(new java.awt.Color(255, 255, 255));
         name.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         name.setForeground(new java.awt.Color(0, 0, 0));
-        name.setText(" Ingrese el nombre");
+        name.setText(" Nombre");
+        name.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nameFocusLost(evt);
+            }
+        });
         name.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 nameMousePressed(evt);
@@ -144,7 +181,15 @@ public class InsertCl extends javax.swing.JPanel {
         ap_p.setBackground(new java.awt.Color(255, 255, 255));
         ap_p.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         ap_p.setForeground(new java.awt.Color(0, 0, 0));
-        ap_p.setText(" Ingrese el apellido paterno");
+        ap_p.setText(" Apellido paterno");
+        ap_p.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ap_pFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ap_pFocusLost(evt);
+            }
+        });
         ap_p.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ap_pMousePressed(evt);
@@ -165,7 +210,15 @@ public class InsertCl extends javax.swing.JPanel {
         Telefono.setBackground(new java.awt.Color(255, 255, 255));
         Telefono.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Telefono.setForeground(new java.awt.Color(0, 0, 0));
-        Telefono.setText(" Ingrese el numero de telefono");
+        Telefono.setText(" Numero de telefono");
+        Telefono.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TelefonoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TelefonoFocusLost(evt);
+            }
+        });
         Telefono.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 TelefonoMouseExited(evt);
@@ -184,7 +237,15 @@ public class InsertCl extends javax.swing.JPanel {
         RFC.setBackground(new java.awt.Color(255, 255, 255));
         RFC.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         RFC.setForeground(new java.awt.Color(0, 0, 0));
-        RFC.setText(" Ingrese el RFC");
+        RFC.setText(" RFC");
+        RFC.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                RFCFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                RFCFocusLost(evt);
+            }
+        });
         RFC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 RFCMousePressed(evt);
@@ -205,7 +266,15 @@ public class InsertCl extends javax.swing.JPanel {
         ap_m.setBackground(new java.awt.Color(255, 255, 255));
         ap_m.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         ap_m.setForeground(new java.awt.Color(0, 0, 0));
-        ap_m.setText(" Ingrese el apellido materno");
+        ap_m.setText(" Apellido materno");
+        ap_m.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ap_mFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ap_mFocusLost(evt);
+            }
+        });
         ap_m.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ap_mMousePressed(evt);
@@ -264,6 +333,14 @@ public class InsertCl extends javax.swing.JPanel {
         Año.setForeground(new java.awt.Color(0, 0, 0));
         Año.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Año.setText("Año");
+        Año.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                AñoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                AñoFocusLost(evt);
+            }
+        });
         Año.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 AñoMousePressed(evt);
@@ -281,6 +358,14 @@ public class InsertCl extends javax.swing.JPanel {
         Mes.setForeground(new java.awt.Color(0, 0, 0));
         Mes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Mes.setText("Mes");
+        Mes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                MesFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                MesFocusLost(evt);
+            }
+        });
         Mes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 MesMousePressed(evt);
@@ -303,6 +388,14 @@ public class InsertCl extends javax.swing.JPanel {
         Dia.setForeground(new java.awt.Color(0, 0, 0));
         Dia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Dia.setText("Dia");
+        Dia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                DiaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                DiaFocusLost(evt);
+            }
+        });
         Dia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 DiaMousePressed(evt);
@@ -332,7 +425,15 @@ public class InsertCl extends javax.swing.JPanel {
         Email.setBackground(new java.awt.Color(255, 255, 255));
         Email.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Email.setForeground(new java.awt.Color(0, 0, 0));
-        Email.setText(" Ingrese el email");
+        Email.setText(" Email");
+        Email.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                EmailFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                EmailFocusLost(evt);
+            }
+        });
         Email.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 EmailMouseExited(evt);
@@ -353,25 +454,6 @@ public class InsertCl extends javax.swing.JPanel {
         email.setText("Email: ");
         add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 130, -1, 20));
 
-        Celular.setBackground(new java.awt.Color(255, 255, 255));
-        Celular.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        Celular.setForeground(new java.awt.Color(0, 0, 0));
-        Celular.setText(" Ingrese el numero de celular");
-        Celular.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                CelularMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CelularMousePressed(evt);
-            }
-        });
-        Celular.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                CelularKeyTyped(evt);
-            }
-        });
-        add(Celular, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 150, 180, 40));
-
         celular.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         celular.setForeground(new java.awt.Color(0, 0, 0));
         celular.setText("* Celular: ");
@@ -382,22 +464,30 @@ public class InsertCl extends javax.swing.JPanel {
         curp.setText("* Curp: ");
         add(curp, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 50, -1, 20));
 
-        Next_or_New.setBackground(new java.awt.Color(18, 90, 173));
-        Next_or_New.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        Next_or_New.setForeground(new java.awt.Color(255, 255, 255));
-        Next_or_New.setText("Siguente");
-        Next_or_New.setBorder(null);
-        Next_or_New.addActionListener(new java.awt.event.ActionListener() {
+        Next_or_save.setBackground(new java.awt.Color(18, 90, 173));
+        Next_or_save.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        Next_or_save.setForeground(new java.awt.Color(255, 255, 255));
+        Next_or_save.setText("Siguente");
+        Next_or_save.setBorder(null);
+        Next_or_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Next_or_NewActionPerformed(evt);
+                Next_or_saveActionPerformed(evt);
             }
         });
-        add(Next_or_New, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 430, 100, 40));
+        add(Next_or_save, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 430, 100, 40));
 
         Curp.setBackground(new java.awt.Color(255, 255, 255));
         Curp.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Curp.setForeground(new java.awt.Color(0, 0, 0));
-        Curp.setText(" Ingrese la curp");
+        Curp.setText(" Curp");
+        Curp.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                CurpFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                CurpFocusLost(evt);
+            }
+        });
         Curp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 CurpMouseExited(evt);
@@ -430,6 +520,14 @@ public class InsertCl extends javax.swing.JPanel {
         Municipio.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Municipio.setForeground(new java.awt.Color(0, 0, 0));
         Municipio.setText(" Municipio");
+        Municipio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                MunicipioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                MunicipioFocusLost(evt);
+            }
+        });
         Municipio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 MunicipioMousePressed(evt);
@@ -452,9 +550,22 @@ public class InsertCl extends javax.swing.JPanel {
         Residencia.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Residencia.setForeground(new java.awt.Color(0, 0, 0));
         Residencia.setText(" Col/barrio/fracc");
+        Residencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ResidenciaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ResidenciaFocusLost(evt);
+            }
+        });
         Residencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ResidenciaMousePressed(evt);
+            }
+        });
+        Residencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResidenciaActionPerformed(evt);
             }
         });
         Residencia.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -467,7 +578,15 @@ public class InsertCl extends javax.swing.JPanel {
         Nombre_calle.setBackground(new java.awt.Color(255, 255, 255));
         Nombre_calle.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Nombre_calle.setForeground(new java.awt.Color(0, 0, 0));
-        Nombre_calle.setText(" Nombre de calle");
+        Nombre_calle.setText(" Calle");
+        Nombre_calle.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                Nombre_calleFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                Nombre_calleFocusLost(evt);
+            }
+        });
         Nombre_calle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Nombre_calleMousePressed(evt);
@@ -484,9 +603,22 @@ public class InsertCl extends javax.swing.JPanel {
         Referencia.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Referencia.setForeground(new java.awt.Color(0, 0, 0));
         Referencia.setText(" Calle de referencia");
+        Referencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ReferenciaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ReferenciaFocusLost(evt);
+            }
+        });
         Referencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ReferenciaMousePressed(evt);
+            }
+        });
+        Referencia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ReferenciaKeyTyped(evt);
             }
         });
         add(Referencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 270, 150, 40));
@@ -494,7 +626,7 @@ public class InsertCl extends javax.swing.JPanel {
         residencia.setBackground(new java.awt.Color(0, 0, 0));
         residencia.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         residencia.setForeground(new java.awt.Color(0, 0, 0));
-        residencia.setText("Col/barrio/fracc:");
+        residencia.setText("Residencia:");
         add(residencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 120, 20));
 
         nombre_calle.setBackground(new java.awt.Color(0, 0, 0));
@@ -513,6 +645,14 @@ public class InsertCl extends javax.swing.JPanel {
         Manzana.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Manzana.setForeground(new java.awt.Color(0, 0, 0));
         Manzana.setText(" Num. Manz");
+        Manzana.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ManzanaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ManzanaFocusLost(evt);
+            }
+        });
         Manzana.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ManzanaMousePressed(evt);
@@ -529,6 +669,14 @@ public class InsertCl extends javax.swing.JPanel {
         Lote.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         Lote.setForeground(new java.awt.Color(0, 0, 0));
         Lote.setText(" Num. Lt");
+        Lote.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LoteFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                LoteFocusLost(evt);
+            }
+        });
         Lote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 LoteMousePressed(evt);
@@ -552,64 +700,9 @@ public class InsertCl extends javax.swing.JPanel {
         lote.setForeground(new java.awt.Color(0, 0, 0));
         lote.setText("Lote/Numero Exterior:");
         add(lote, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 150, 20));
-
-        Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Cargando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-spinner-para-iphone.gif"))); // NOI18N
-        add(Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 500));
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameMousePressed
-        if (name.getText().equals(" Ingrese el nombre")) {
-            name.setText("");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
 
     }//GEN-LAST:event_nameMousePressed
 
@@ -618,57 +711,7 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_nameActionPerformed
 
     private void ap_pMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ap_pMousePressed
-        if (ap_p.getText().equals(" Ingrese el apellido paterno")) {
-            ap_p.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_ap_pMousePressed
 
     private void ap_pActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ap_pActionPerformed
@@ -680,165 +723,15 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_TelefonoMouseExited
 
     private void TelefonoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelefonoMousePressed
-        if (Telefono.getText().equals(" Ingrese el numero de telefono")) {
-            Telefono.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_TelefonoMousePressed
 
     private void RFCMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RFCMousePressed
-        if (RFC.getText().equals(" Ingrese el RFC")) {
-            RFC.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_RFCMousePressed
 
     private void ap_mMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ap_mMousePressed
-        if (ap_m.getText().equals(" Ingrese el apellido materno")) {
-            ap_m.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_ap_mMousePressed
 
     private void ap_mMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ap_mMouseReleased
@@ -846,111 +739,11 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_ap_mMouseReleased
 
     private void AñoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AñoMousePressed
-        if (Año.getText().equals("Año")) {
-            Año.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_AñoMousePressed
 
     private void MesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MesMousePressed
-        if (Mes.getText().equals("Mes")) {
-            Mes.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_MesMousePressed
 
     private void MesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MesActionPerformed
@@ -958,65 +751,15 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_MesActionPerformed
 
     private void DiaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DiaMousePressed
-        if (Dia.getText().equals("Dia")) {
-            Dia.setText("");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Mzn");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
+
     }//GEN-LAST:event_DiaMousePressed
 
     private void FolioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FolioMousePressed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_FolioMousePressed
 
     private void FolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FolioActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_FolioActionPerformed
 
     private void TelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TelefonoKeyTyped
@@ -1034,7 +777,6 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_TelefonoKeyTyped
 
     private void AñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AñoKeyTyped
-        // TODO add your handling code here:
         int key = evt.getKeyChar();
 
         boolean numeros = key >= 48 && key <= 57;
@@ -1049,7 +791,6 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_AñoKeyTyped
 
     private void MesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MesKeyTyped
-        // TODO add your handling code here:
         int key = evt.getKeyChar();
 
         boolean numeros = key >= 48 && key <= 57;
@@ -1064,7 +805,6 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_MesKeyTyped
 
     private void DiaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiaKeyTyped
-        // TODO add your handling code here:
         int key = evt.getKeyChar();
 
         boolean numeros = key >= 48 && key <= 57;
@@ -1079,81 +819,27 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_DiaKeyTyped
 
     private void nameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameKeyTyped
-        // TODO add your handling code here:
         entrada(evt);
     }//GEN-LAST:event_nameKeyTyped
 
     private void ap_pKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ap_pKeyTyped
-        // TODO add your handling code here:
         entrada(evt);
     }//GEN-LAST:event_ap_pKeyTyped
 
     private void ap_mKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ap_mKeyTyped
-        // TODO add your handling code here:
         entrada(evt);
     }//GEN-LAST:event_ap_mKeyTyped
 
     private void EmailMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmailMouseExited
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_EmailMouseExited
 
     private void EmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmailMousePressed
 
-        if (Email.getText().equals(" Ingrese el email")) {
-            Email.setText("");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
     }//GEN-LAST:event_EmailMousePressed
 
     private void EmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EmailKeyTyped
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_EmailKeyTyped
 
     private void CelularMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CelularMouseExited
@@ -1161,57 +847,7 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_CelularMouseExited
 
     private void CelularMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CelularMousePressed
-        if (Celular.getText().equals(" Ingrese el numero de celular")) {
-            Celular.setText("");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_CelularMousePressed
 
     private void CelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CelularKeyTyped
@@ -1229,61 +865,10 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_CelularKeyTyped
 
     private void CurpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CurpMouseExited
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_CurpMouseExited
 
     private void CurpMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CurpMousePressed
-        if (Curp.getText().equals(" Ingrese la curp")) {
-            Curp.setText("");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
 
     }//GEN-LAST:event_CurpMousePressed
 
@@ -1293,167 +878,174 @@ public class InsertCl extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_CurpKeyTyped
 
-    private void Next_or_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Next_or_NewActionPerformed
-        if (RFC.getText().equals(" Ingrese el RFC") || RFC.getText().isEmpty()) {
-            
+    private void Next_or_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Next_or_saveActionPerformed
+        boolean ValNombre = ValidarEntradas(name.getText(), " Nombre");
+        if (ValNombre == false) {
+            JOptionPane.showMessageDialog(null, "Campo vacio: Nombre", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+            name.requestFocus();
         } else {
-            rfco = RFC.getText();
-        }
-        if (Telefono.getText().equals(" Ingrese el numero de telefono") || Telefono.getText().isEmpty()) {
-            
-        }else{
-            telefonoo = Telefono.getText();
-        }
-        if(Email.getText().equals(" Ingrese el email")||Email.getText().isEmpty()){
-            
-        }else{
-            emailo = Email.getText();
-        }
-        if (name.getText().equals(" Ingrese el nombre") || ap_p.getText().equals(" Ingrese el apellido paterno")
-                || ap_m.getText().equals(" Ingrese el apellido materno") || Año.getText().equals("Año")
-                || Mes.getText().equals("Mes") || Dia.getText().equals("Dia")
-                || Celular.getText().equals(" Ingrese el numero de celular") || Municipio.getText().equals(" Municipio")
-                || Residencia.getText().equals(" Col/barrio/fracc") || Nombre_calle.getText().equals(" Nombre de calle")
-                || Referencia.getText().equals(" Calle de referencia") || Manzana.getText().equals(" Num. Mzn") || Lote.getText().equals(" Num. Lt")
-                || name.getText().isEmpty() || ap_m.getText().isEmpty() || ap_p.getText().isEmpty() || Año.getText().isEmpty()
-                || Mes.getText().isEmpty() || Dia.getText().isEmpty()
-                || Celular.getText().isEmpty() || Municipio.getText().isEmpty()
-                || Residencia.getText().isEmpty() || Nombre_calle.getText().isEmpty() || Referencia.getText().isEmpty()
-                || Manzana.getText().isEmpty() || Lote.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Los campos no estan llenos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            if (Año.getText().trim().length() < 4 || Mes.getText().trim().length() < 2 || Dia.getText().trim().length() < 2) {
-                JOptionPane.showMessageDialog(this, "Fecha de nacimiento no valida", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            boolean ValApp = ValidarEntradas(ap_p.getText(), " Apellido paterno");
+            if (ValApp == false) {
+                JOptionPane.showMessageDialog(null, "Campo vacio: Apellido parterno", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                ap_p.requestFocus();
             } else {
-                if (Curp.getText().trim().length() < 18) {
-                    JOptionPane.showMessageDialog(this, "Curp no valida", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                boolean ValApm = ValidarEntradas(ap_m.getText(), " Apellido paterno");
+                if (ValApm == false) {
+                    JOptionPane.showMessageDialog(null, "Campo vacio: Apellido materno", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                    ap_m.requestFocus();
                 } else {
-                    if (Celular.getText().trim().length() < 10) {
-                        JOptionPane.showMessageDialog(this, "Numero de celular no valido", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    }else{
-                        new MostrarC().show();
+                    boolean ValAñ = ValidarEntradas(Año.getText(), "Año");
+                    if (ValAñ == false) {
+                        JOptionPane.showMessageDialog(null, "Campo vacio: Año ", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                        Año.requestFocus();
+                    } else {
+                        if (Año.getText().trim().length() < 4) {
+                            JOptionPane.showMessageDialog(null, "Año invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                            Año.requestFocus();
+                        } else {
+                            boolean ValM = ValidarEntradas(Mes.getText(), "Mes");
+                            if (ValM == false) {
+                                JOptionPane.showMessageDialog(null, "Campo vacio: Año ", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                Mes.requestFocus();
+                            } else {
+                                if (Mes.getText().trim().length() < 2) {
+                                    JOptionPane.showMessageDialog(null, "Mes invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                    Mes.requestFocus();
+                                } else {
+                                    boolean ValD = ValidarEntradas(Dia.getText(), "Dia");
+                                    if (ValD == false) {
+                                        JOptionPane.showMessageDialog(null, "Campo vacio: Dia ", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                        Dia.requestFocus();
+                                    } else {
+                                        if (Dia.getText().trim().length() < 2) {
+                                            JOptionPane.showMessageDialog(null, "Dia invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                            Dia.requestFocus();
+                                        } else {
+                                            boolean ValC = ValidarEntradas(Curp.getText(), " Curp");
+                                            if (ValC == false) {
+                                                JOptionPane.showMessageDialog(null, "Campo vacio: Curp", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                Curp.requestFocus();
+                                            } else {
+                                                boolean vCURP = validarCURP(Curp.getText());
+                                                if (vCURP == false) {
+                                                    JOptionPane.showMessageDialog(null, "Curp invalida", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                    Curp.requestFocus();
+                                                } else {
+                                                    boolean Valrfc = ValidarEntradas(RFC.getText(), " RFC");
+                                                    if (Valrfc == false) {
+                                                        rfco = "Sin RFC";
+                                                    } else {//--------------------
+                                                        boolean vRFC = validarRfc(RFC.getText());
+                                                        if (vRFC == false) {
+                                                            JOptionPane.showMessageDialog(null, "RFC invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                            RFC.requestFocus();
+                                                            return;
+                                                        } else {
+                                                            rfco = RFC.getText();
+                                                        }
+                                                    }//-----------
+                                                    boolean Valt = ValidarEntradas(Telefono.getText(), " Numero de telefono");
+                                                    if (Valt == false) {
+                                                        telefonoo = "Sin numero";
+                                                    } else {
+                                                        telefonoo = Telefono.getText();
+                                                    }
+                                                    boolean ValCel = ValidarEntradas(Celular.getText(), " Numero de celular");
+                                                    if (ValCel == false) {
+                                                        JOptionPane.showMessageDialog(null, "Campo vacio: Celular", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                        Celular.requestFocus();
+                                                        return;
+                                                    } else {
+                                                        if (Celular.getText().trim().length() < 10) {
+                                                            JOptionPane.showMessageDialog(null, "Numero de celular invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                            Celular.requestFocus();
+                                                            return;
+                                                        } else {
+                                                            boolean ValEm = ValidarEntradas(Email.getText(), " Email");
+                                                            if (ValEm == false) {
+                                                                emailo = "Sin email";
+                                                            } else {
+                                                                boolean vEmail = validarEmail(Email.getText());
+                                                                if (vEmail == false) {
+                                                                    JOptionPane.showMessageDialog(null, "Email invalido", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                    Email.requestFocus();
+                                                                    return;
+                                                                } else {
+                                                                    emailo = Email.getText();
+                                                                }
+                                                            }
+                                                            boolean ValMu = ValidarEntradas(Municipio.getText(), " Municipio");
+                                                            if (ValMu == false) {
+                                                                JOptionPane.showMessageDialog(null, "Campo vacio: Municipio", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                Municipio.requestFocus();
+                                                                return;
+                                                            } else {
+                                                                boolean ValRe = ValidarEntradas(Municipio.getText(), " Col/barrio/fracc");
+                                                                if (ValRe == false) {
+                                                                    JOptionPane.showMessageDialog(null, "Campo vacio: Residencia", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                    Residencia.requestFocus();
+                                                                    return;
+                                                                } else {
+                                                                    boolean ValNC = ValidarEntradas(Nombre_calle.getText(), " Calle");
+                                                                    if (ValNC == false) {
+                                                                        JOptionPane.showMessageDialog(null, "Campo vacio: Nombre de calle", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                        Nombre_calle.requestFocus();
+                                                                        return;
+                                                                    } else {
+                                                                        boolean ValRef = ValidarEntradas(Referencia.getText(), " Calle de referencia");
+                                                                        if (ValRef == false) {
+                                                                            JOptionPane.showMessageDialog(null, "Campo vacio: Calle de referencia", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                            Municipio.requestFocus();
+                                                                            return;
+                                                                        } else {
+                                                                            boolean ValMa = ValidarEntradas(Manzana.getText(), " Num. Manz");
+                                                                            if (ValMa == false) {
+                                                                                JOptionPane.showMessageDialog(null, "Campo vacio: Numero de Manzana", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                                Manzana.requestFocus();
+                                                                                return;
+                                                                            } else {
+                                                                                boolean ValLt = ValidarEntradas(Lote.getText(), " Num. Lt");
+                                                                                if (ValLt == false) {
+                                                                                    JOptionPane.showMessageDialog(null, "Campo vacio: Numero de Lote", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                                                                                    Lote.requestFocus();
+                                                                                    return;
+                                                                                } else {
+                                                                                    new MostrarC().show();
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }//-----------------------------
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-
-    }//GEN-LAST:event_Next_or_NewActionPerformed
+    }//GEN-LAST:event_Next_or_saveActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
         Confirmacion();
     }//GEN-LAST:event_CancelarActionPerformed
 
     private void MunicipioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MunicipioMousePressed
-        if (Municipio.getText().equals(" Municipio")) {
-            Municipio.setText("");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_MunicipioMousePressed
 
     private void MunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MunicipioKeyTyped
-        // TODO add your handling code here:
         entrada(evt);
     }//GEN-LAST:event_MunicipioKeyTyped
 
     private void ResidenciaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ResidenciaMousePressed
-        if (Residencia.getText().equals(" Col/barrio/fracc")) {
-            Residencia.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_ResidenciaMousePressed
 
     private void ResidenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResidenciaKeyTyped
@@ -1461,57 +1053,7 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_ResidenciaKeyTyped
 
     private void Nombre_calleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Nombre_calleMousePressed
-        if (Nombre_calle.getText().equals(" Nombre de calle")) {
-            Nombre_calle.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_Nombre_calleMousePressed
 
     private void Nombre_calleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nombre_calleKeyTyped
@@ -1519,111 +1061,11 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_Nombre_calleKeyTyped
 
     private void ReferenciaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReferenciaMousePressed
-        if (Referencia.getText().equals(" Calle de referencia")) {
-            Referencia.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_ReferenciaMousePressed
 
     private void ManzanaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ManzanaMousePressed
-        if (Manzana.getText().equals(" Num. Manz")) {
-            Manzana.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Lote.getText().isEmpty()) {
-            Lote.setText(" Num. Lt");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_ManzanaMousePressed
 
     private void ManzanaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ManzanaKeyTyped
@@ -1637,61 +1079,10 @@ public class InsertCl extends javax.swing.JPanel {
     }//GEN-LAST:event_ManzanaKeyTyped
 
     private void LoteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoteMousePressed
-        if (Lote.getText().equals(" Num. Lt")) {
-            Lote.setText("");
-        }
-        if (Municipio.getText().isEmpty()) {
-            Municipio.setText(" Municipio");
-        }
-        if (Residencia.getText().isEmpty()) {
-            Residencia.setText(" Col/barrio/fracc");
-        }
-        if (Nombre_calle.getText().isEmpty()) {
-            Nombre_calle.setText(" Nombre de calle");
-        }
-        if (Manzana.getText().isEmpty()) {
-            Manzana.setText(" Num. Manz");
-        }
-        if (Referencia.getText().isEmpty()) {
-            Referencia.setText(" Calle de referencia");
-        }
-        if (Dia.getText().isEmpty()) {
-            Dia.setText("Dia");
-        }
-        if (name.getText().isEmpty()) {
-            name.setText(" Ingrese el nombre");
-        }
-        if (ap_m.getText().isEmpty()) {
-            ap_m.setText(" Ingrese el apellido materno");
-        }
-        if (ap_p.getText().isEmpty()) {
-            ap_p.setText(" Ingrese el apellido paterno");
-        }
-        if (Año.getText().isEmpty()) {
-            Año.setText("Año");
-        }
-        if (Mes.getText().isEmpty()) {
-            Mes.setText("Mes");
-        }
-        if (RFC.getText().isEmpty()) {
-            RFC.setText(" Ingrese el RFC");
-        }
-        if (Telefono.getText().isEmpty()) {
-            Telefono.setText(" Ingrese el numero de telefono");
-        }
-        if (Curp.getText().isEmpty()) {
-            Curp.setText(" Ingrese la curp");
-        }
-        if (Celular.getText().isEmpty()) {
-            Celular.setText(" Ingrese el numero de celular");
-        }
-        if (Email.getText().isEmpty()) {
-            Email.setText(" Ingrese el email");
-        }
+
     }//GEN-LAST:event_LoteMousePressed
 
     private void LoteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LoteKeyTyped
-        // TODO add your handling code here:
         int key = evt.getKeyChar();
 
         boolean numeros = key >= 48 && key <= 57;
@@ -1707,110 +1098,283 @@ public class InsertCl extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_RFCKeyTyped
 
+    private void ReferenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ReferenciaKeyTyped
+
+    }//GEN-LAST:event_ReferenciaKeyTyped
+
+    private void ResidenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResidenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ResidenciaActionPerformed
+
+    private void ManzanaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ManzanaFocusLost
+        if (Manzana.getText().isEmpty()) {
+            Manzana.setText(" Num. Manz");
+        }
+    }//GEN-LAST:event_ManzanaFocusLost
+
+    private void nameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameFocusLost
+        if (name.getText().isEmpty()) {
+            name.setText(" Nombre");
+        }
+    }//GEN-LAST:event_nameFocusLost
+
+    private void ap_pFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ap_pFocusLost
+        if (ap_p.getText().isEmpty()) {
+            ap_p.setText(" Apellido paterno");
+        }
+    }//GEN-LAST:event_ap_pFocusLost
+
+    private void ap_mFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ap_mFocusLost
+        if (ap_m.getText().isEmpty()) {
+            ap_m.setText(" Apellido materno");
+        }
+    }//GEN-LAST:event_ap_mFocusLost
+
+    private void AñoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_AñoFocusLost
+        if (Año.getText().isEmpty()) {
+            Año.setText("Año");
+        }
+    }//GEN-LAST:event_AñoFocusLost
+
+    private void MesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MesFocusLost
+        if (Mes.getText().isEmpty()) {
+            Mes.setText("Mes");
+        }
+    }//GEN-LAST:event_MesFocusLost
+
+    private void DiaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_DiaFocusLost
+        if (Dia.getText().isEmpty()) {
+            Dia.setText("Dia");
+        }
+    }//GEN-LAST:event_DiaFocusLost
+
+    private void CurpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CurpFocusLost
+        if (Curp.getText().isEmpty()) {
+            Curp.setText(" Curp");
+        }
+    }//GEN-LAST:event_CurpFocusLost
+
+    private void RFCFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_RFCFocusLost
+        if (RFC.getText().isEmpty()) {
+            RFC.setText(" RFC");
+        }
+    }//GEN-LAST:event_RFCFocusLost
+
+    private void TelefonoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TelefonoFocusLost
+        if (Telefono.getText().isEmpty()) {
+            Telefono.setText(" Numero de telefono");
+        }
+    }//GEN-LAST:event_TelefonoFocusLost
+
+    private void CelularFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CelularFocusLost
+        if (Celular.getText().isEmpty()) {
+            Celular.setText(" Numero de celular");
+        }
+    }//GEN-LAST:event_CelularFocusLost
+
+    private void EmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFocusLost
+        if (Email.getText().isEmpty()) {
+            Email.setText(" Email");
+        }
+    }//GEN-LAST:event_EmailFocusLost
+
+    private void MunicipioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MunicipioFocusLost
+        if (Municipio.getText().isEmpty()) {
+            Municipio.setText(" Municipio");
+        }
+    }//GEN-LAST:event_MunicipioFocusLost
+
+    private void ResidenciaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ResidenciaFocusLost
+        if (Residencia.getText().isEmpty()) {
+            Residencia.setText(" Col/barrio/fracc");
+        }
+    }//GEN-LAST:event_ResidenciaFocusLost
+
+    private void Nombre_calleFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Nombre_calleFocusLost
+        if (Nombre_calle.getText().isEmpty()) {
+            Nombre_calle.setText(" Calle");
+        }
+    }//GEN-LAST:event_Nombre_calleFocusLost
+
+    private void ReferenciaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ReferenciaFocusLost
+        if (Referencia.getText().isEmpty()) {
+            Referencia.setText(" Calle de referencia");
+        }
+    }//GEN-LAST:event_ReferenciaFocusLost
+
+    private void LoteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoteFocusLost
+        if (Lote.getText().isEmpty()) {
+            Lote.setText(" Num. Lt");
+        }
+    }//GEN-LAST:event_LoteFocusLost
+
+    private void nameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameFocusGained
+        if (name.getText().equals(" Nombre")) {
+            name.setText("");
+        }
+    }//GEN-LAST:event_nameFocusGained
+
+    private void ap_pFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ap_pFocusGained
+        if (ap_p.getText().equals(" Apellido paterno")) {
+            ap_p.setText("");
+        }
+    }//GEN-LAST:event_ap_pFocusGained
+
+    private void ap_mFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ap_mFocusGained
+        if (ap_m.getText().equals(" Apellido materno")) {
+            ap_m.setText("");
+        }
+    }//GEN-LAST:event_ap_mFocusGained
+
+    private void AñoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_AñoFocusGained
+        if (Año.getText().equals("Año")) {
+            Año.setText("");
+        }
+    }//GEN-LAST:event_AñoFocusGained
+
+    private void MesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MesFocusGained
+        if (Mes.getText().equals("Mes")) {
+            Mes.setText("");
+        }
+    }//GEN-LAST:event_MesFocusGained
+
+    private void DiaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_DiaFocusGained
+        if (Dia.getText().equals("Dia")) {
+            Dia.setText("");
+        }
+    }//GEN-LAST:event_DiaFocusGained
+
+    private void CurpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CurpFocusGained
+        if (Curp.getText().equals(" Curp")) {
+            Curp.setText("");
+        }
+    }//GEN-LAST:event_CurpFocusGained
+
+    private void RFCFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_RFCFocusGained
+        if (RFC.getText().equals(" RFC")) {
+            RFC.setText("");
+        }
+    }//GEN-LAST:event_RFCFocusGained
+
+    private void TelefonoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TelefonoFocusGained
+        if (Telefono.getText().equals(" Numero de telefono")) {
+            Telefono.setText("");
+        }
+    }//GEN-LAST:event_TelefonoFocusGained
+
+    private void CelularFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CelularFocusGained
+        if (Celular.getText().equals(" Numero de celular")) {
+            Celular.setText("");
+        }
+    }//GEN-LAST:event_CelularFocusGained
+
+    private void EmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailFocusGained
+        if (Email.getText().equals(" Email")) {
+            Email.setText("");
+        }
+    }//GEN-LAST:event_EmailFocusGained
+
+    private void MunicipioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_MunicipioFocusGained
+        if (Municipio.getText().equals(" Municipio")) {
+            Municipio.setText("");
+        }
+    }//GEN-LAST:event_MunicipioFocusGained
+
+    private void ResidenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ResidenciaFocusGained
+        if (Residencia.getText().equals(" Col/barrio/fracc")) {
+            Residencia.setText("");
+        }
+    }//GEN-LAST:event_ResidenciaFocusGained
+
+    private void Nombre_calleFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Nombre_calleFocusGained
+        if (Nombre_calle.getText().equals(" Calle")) {
+            Nombre_calle.setText("");
+        }
+    }//GEN-LAST:event_Nombre_calleFocusGained
+
+    private void ReferenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ReferenciaFocusGained
+        if (Referencia.getText().equals(" Calle de referencia")) {
+            Referencia.setText("");
+        }
+    }//GEN-LAST:event_ReferenciaFocusGained
+
+    private void ManzanaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ManzanaFocusGained
+        if (Manzana.getText().equals(" Num. Manz")) {
+            Manzana.setText("");
+        }
+    }//GEN-LAST:event_ManzanaFocusGained
+
+    private void LoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoteFocusGained
+        if (Lote.getText().equals(" Num. Lt")) {
+            Lote.setText("");
+        }
+    }//GEN-LAST:event_LoteFocusGained
+
+    private boolean ValidarEntradas(String var, String comp) {
+        return !(var.equals(comp) || var.isEmpty());
+    }
+
+    private boolean validarEmail(String email) {
+        String regex
+                = "([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+";
+        email = email.toLowerCase().trim();
+        Pattern patron = Pattern.compile(regex);
+        if (!patron.matcher(email).matches()) {
+            if (Email.getText().equals("Sin email")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            emailo = email;
+            return true;
+        }
+    }
+
+    public boolean validarRfc(String rfc) {
+        rfc = rfc.toUpperCase().trim();
+        rfco = rfc;
+        return rfc.toUpperCase().matches("[A-Z]{4}[0-9]{6}[A-Z0-9]{3}");
+    }
+    
+    private boolean validarCURP(String curp) {
+        String regex
+                = "[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}"
+                + "(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])"
+                + "[HM]{1}"
+                + "(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)"
+                + "[B-DF-HJ-NP-TV-Z]{3}"
+                + "[0-9A-Z]{1}[0-9]{1}$";
+        curp = curp.toUpperCase().trim();
+        Pattern patron = Pattern.compile(regex);
+        if (!patron.matcher(curp).matches()) {
+            return false;
+        } else {
+            Curpo = curp;
+            return true;
+        }
+    }
+
     public class MostrarC implements Runnable {
 
         public void show() {
             new Thread(this).start();
         }
 
-        @Override
         public void run() {
-            name.setVisible(false);
-            ap_p.setVisible(false);
-            ap_m.setVisible(false);
-            Año.setVisible(false);
-            Mes.setVisible(false);
-            Dia.setVisible(false);
-            RFC.setVisible(false);
-            Telefono.setVisible(false);
-            nombre.setVisible(false);
-            app.setVisible(false);
-            apm.setVisible(false);
-            fecha.setVisible(false);
-            rfc.setVisible(false);
-            tel.setVisible(false);
-            guion.setVisible(false);
-            guion2.setVisible(false);
-            Cliente_Datos.setVisible(false);
-            Separador.setVisible(false);
-            Next_or_New.setVisible(false);
-            Cancelar.setVisible(false);
-            Celular.setVisible(false);
-            Curp.setVisible(false);
-            Email.setVisible(false);
-            Municipio.setVisible(false);
-            Residencia.setVisible(false);
-            Nombre_calle.setVisible(false);
-            Referencia.setVisible(false);
-            Manzana.setVisible(false);
-            Lote.setVisible(false);
-            Separador2.setVisible(false);
-            Cliente_Domicilio.setVisible(false);
-            celular.setVisible(false);
-            manzana.setVisible(false);
-            lote.setVisible(false);
-            municipio.setVisible(false);
-            residencia.setVisible(false);
-            nombre_calle.setVisible(false);
-            referencia.setVisible(false);
-            curp.setVisible(false);
-            email.setVisible(false);
             Cargando.setVisible(true);
-            Folio.setVisible(false);
-            Foliot.setVisible(false);
-            if (editar == true) {
+            if (ubicacion.equals("editar cliente")) {
                 Actualizar();
                 if (es.getResultact() == 1) {
                     regresar();
                 } else {
-                    name.setVisible(true);
-                    ap_p.setVisible(true);
-                    ap_m.setVisible(true);
-                    Año.setVisible(true);
-                    Mes.setVisible(true);
-                    Dia.setVisible(true);
-                    RFC.setVisible(true);
-                    Telefono.setVisible(true);
-                    nombre.setVisible(true);
-                    app.setVisible(true);
-                    apm.setVisible(true);
-                    fecha.setVisible(true);
-                    rfc.setVisible(true);
-                    tel.setVisible(true);
-                    guion.setVisible(true);
-                    guion2.setVisible(true);
-                    Cliente_Datos.setVisible(true);
-                    Separador.setVisible(true);
-                    Next_or_New.setVisible(true);
-                    Cancelar.setVisible(true);
-                    Celular.setVisible(true);
-                    Curp.setVisible(true);
-                    Email.setVisible(true);
-                    Municipio.setVisible(true);
-                    Residencia.setVisible(true);
-                    Nombre_calle.setVisible(true);
-                    Referencia.setVisible(true);
-                    Manzana.setVisible(true);
-                    Lote.setVisible(true);
-                    Separador2.setVisible(true);
-                    Cliente_Domicilio.setVisible(true);
-                    celular.setVisible(true);
-                    manzana.setVisible(true);
-                    lote.setVisible(true);
-                    municipio.setVisible(true);
-                    residencia.setVisible(true);
-                    nombre_calle.setVisible(true);
-                    referencia.setVisible(true);
-                    curp.setVisible(true);
-                    email.setVisible(true);
                     Cargando.setVisible(false);
-                    Folio.setVisible(true);
-                    Foliot.setVisible(true);
                 }
             } else {
                 Mostrar();
+                Cargando.setVisible(false);
             }
-            Cargando.setVisible(false);
+
         }
     }
 
@@ -1843,80 +1407,39 @@ public class InsertCl extends javax.swing.JPanel {
 
         @Override
         public void run() {
-            Folio.setVisible(false);
-            name.setVisible(false);
-            ap_p.setVisible(false);
-            ap_m.setVisible(false);
-            Año.setVisible(false);
-            Mes.setVisible(false);
-            Dia.setVisible(false);
-            RFC.setVisible(false);
-            Telefono.setVisible(false);
-            nombre.setVisible(false);
-            app.setVisible(false);
-            apm.setVisible(false);
-            fecha.setVisible(false);
-            rfc.setVisible(false);
-            tel.setVisible(false);
-            guion.setVisible(false);
-            guion2.setVisible(false);
-            Cliente_Datos.setVisible(false);
-            Separador.setVisible(false);
-            Next_or_New.setVisible(false);
-            Cancelar.setVisible(false);
-            Celular.setVisible(false);
-            Curp.setVisible(false);
-            Email.setVisible(false);
-            Municipio.setVisible(false);
-            Residencia.setVisible(false);
-            Nombre_calle.setVisible(false);
-            Referencia.setVisible(false);
-            Manzana.setVisible(false);
-            Lote.setVisible(false);
-            Separador2.setVisible(false);
-            Cliente_Domicilio.setVisible(false);
-            celular.setVisible(false);
-            manzana.setVisible(false);
-            lote.setVisible(false);
-            municipio.setVisible(false);
-            residencia.setVisible(false);
-            nombre_calle.setVisible(false);
-            referencia.setVisible(false);
-            curp.setVisible(false);
-            email.setVisible(false);
-            Cargando.setVisible(true);
             regresar();
         }
     }
 
     private void Actualizar() {
-
         String fech = Año.getText() + "-" + Mes.getText() + "-" + Dia.getText();
         Date fec = Date.valueOf(fech);
         ClienteServicio cs = new ClienteServicio();
         es.setResultact(cs.ActualizarCliente(folio, name.getText(), ap_p.getText(), ap_m.getText(),
-                fec, telefonoo, Celular.getText(), emailo, Curp.getText(), rfco, Municipio.getText(),
-                Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Manzana.getText(),
-                Lote.getText()));
+                fec, telefonoo, Celular.getText(), emailo, Curpo, rfco, Municipio.getText(),
+                Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Integer.parseInt(Manzana.getText()),
+                Integer.parseInt(Lote.getText())));
+        Curpo = "";
     }
 
     private void Mostrar() {
         String fech = Año.getText() + "-" + Mes.getText() + "-" + Dia.getText();
         Date fec = Date.valueOf(fech);
-
+        System.out.println("entrando");
         ClienteServicio cs = new ClienteServicio();
         String status = "activo";
         folio_cte = cs.InsertarCliente(name.getText(), ap_p.getText(), ap_m.getText(),
-                fec, telefonoo, Celular.getText(), emailo, Curp.getText(), rfco, Municipio.getText(),
-                Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Manzana.getText(), Lote.getText(), status);
+                fec, telefonoo, Celular.getText(), emailo, Curpo, rfco, Municipio.getText(),
+                Residencia.getText(), Nombre_calle.getText(), Referencia.getText(), Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()), status);
         if (folio_cte == -1) {
             JOptionPane.showMessageDialog(this, "Algo salio mal al insertar", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            System.out.println("else");
             Contrato_generado cg = new Contrato_generado();
-            cg.setNombre_cliente(name.getText());
+            cg.setNombre_cliente(name.getText() + " " + ap_p.getText() + "" + ap_m.getText());
             Cliente c = new Cliente(folio_cte, Municipio.getText(),
                     Residencia.getText(), Nombre_calle.getText(), Referencia.getText(),
-                    Manzana.getText(), Lote.getText());
+                    Integer.parseInt(Manzana.getText()), Integer.parseInt(Lote.getText()));
             Contrato_regis p1 = new Contrato_regis(c, ubicacion);
             p1.setSize(1030, 500);
             p1.setLocation(0, 0);
@@ -1978,8 +1501,8 @@ public class InsertCl extends javax.swing.JPanel {
             Residencia.setText(lista.get(i).getResidencia());
             Nombre_calle.setText(lista.get(i).getNombreCalle());
             Referencia.setText(lista.get(i).getCalleReferencia());
-            Manzana.setText(lista.get(i).getNumeroMzn());
-            Lote.setText(lista.get(i).getNumeroLt());
+            Manzana.setText(String.valueOf(lista.get(i).getNumeroMzn()));
+            Lote.setText(String.valueOf(lista.get(i).getNumeroLt()));
         }
     }
 
@@ -2010,7 +1533,7 @@ public class InsertCl extends javax.swing.JPanel {
     private javax.swing.JTextField Manzana;
     private javax.swing.JTextField Mes;
     private javax.swing.JTextField Municipio;
-    private javax.swing.JButton Next_or_New;
+    private javax.swing.JButton Next_or_save;
     private javax.swing.JTextField Nombre_calle;
     private javax.swing.JTextField RFC;
     private javax.swing.JTextField Referencia;

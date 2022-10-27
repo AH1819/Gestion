@@ -7,12 +7,14 @@ import java.awt.Color;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.greenrobot.eventbus.EventBus;
 
 public class Interfaz2 extends javax.swing.JFrame {
 
     int Xmouse, Ymouse;
     Principal p1 = new Principal();
     ErrorsAndSuccesses es = new ErrorsAndSuccesses();
+    public static EventBus eventos = new EventBus();
     Logeo p0 = new Logeo();
     int cerrar;
     String ventana;
@@ -25,7 +27,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         int year = now.getYear();
         int dia = now.getDayOfMonth();
         int month = now.getMonthValue();
-        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", " ;Septiembre",
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
             "Octubre", "Noviembre", "Diciemrbre"};
         fecha.setText("Hoy es " + dia + " de " + meses[month - 1] + " de " + year);
 
@@ -44,6 +46,24 @@ public class Interfaz2 extends javax.swing.JFrame {
             Admin.setVisible(false);
             btn_reports.setVisible(false);
         }
+        new Thread() {
+            public void run() {
+                int x = 1000;
+                int y = Ayuntamiento.getLocation().y;
+
+                while (true) {
+                    x--;
+                    if (x < -300) {
+                        x = 1000;
+                    }
+                    Ayuntamiento.setLocation(x, y);
+                    try {
+                        sleep(9);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }.start();
     }
 
     @SuppressWarnings("unchecked")
@@ -83,12 +103,14 @@ public class Interfaz2 extends javax.swing.JFrame {
         Header = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
+        Ayuntamiento = new javax.swing.JLabel();
         Title = new javax.swing.JPanel();
         red_squr = new javax.swing.JPanel();
         exit = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        setResizable(false);
 
         Background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -345,34 +367,23 @@ public class Interfaz2 extends javax.swing.JFrame {
         Background.add(content, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 1030, 500));
 
         Header.setBackground(new java.awt.Color(25, 118, 210));
+        Header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Administración/Control/Servicio");
+        Header.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 30));
 
         fecha.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         fecha.setForeground(new java.awt.Color(255, 255, 255));
         fecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fecha.setText("Hoy es Jueves 24 de Marzo de 2022");
+        Header.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1030, 40));
 
-        javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
-        Header.setLayout(HeaderLayout);
-        HeaderLayout.setHorizontalGroup(
-            HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE)
-            .addGroup(HeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        HeaderLayout.setVerticalGroup(
-            HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
-        );
+        Ayuntamiento.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        Ayuntamiento.setForeground(new java.awt.Color(255, 255, 255));
+        Ayuntamiento.setText("H. Ayuntamiento de Cacahoatán");
+        Header.add(Ayuntamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 260, 34));
 
         Background.add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, 1030, 110));
 
@@ -521,7 +532,7 @@ public class Interfaz2 extends javax.swing.JFrame {
 
     private void btn_contratoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_contratoMousePressed
         ventana = "contratos";
-        if (es.getUbicacion().equals("null")) {
+        if (es.getUbicacion().equals("null") || es.getUbicacion().equals("contrato") || es.getUbicacion().equals("cliente")) {
             new MostrarPanel().show();
         } else {
             Confirmacion();
@@ -540,7 +551,7 @@ public class Interfaz2 extends javax.swing.JFrame {
     private void btn_clientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_clientesMouseExited
         if (btn_prin.getBackground().getRGB() != -15574355 || btn_service.getBackground().getRGB() != -15574355
                 || btn_contrato.getBackground().getRGB() != -15574355 || btn_reports.getBackground().getRGB() != -15574355
-                || Admin.getBackground().getRGB() != -15574355 ||Aboutus.getBackground().getRGB() != -15574355
+                || Admin.getBackground().getRGB() != -15574355 || Aboutus.getBackground().getRGB() != -15574355
                 || Login_exit.getBackground().getRGB() != -15574355) {
             resetColor(btn_clientes);
         }
@@ -548,7 +559,7 @@ public class Interfaz2 extends javax.swing.JFrame {
 
     private void btn_clientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_clientesMousePressed
         ventana = "clientes";
-        if (es.getUbicacion().equals("null")) {
+        if (es.getUbicacion().equals("null") || es.getUbicacion().equals("contrato") || es.getUbicacion().equals("cliente")) {
             new MostrarPanel().show();
         } else {
             Confirmacion();
@@ -575,7 +586,7 @@ public class Interfaz2 extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_reportsMouseExited
 
     private void btn_reportsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reportsMousePressed
-        /*setColor(btn_reports);
+        setColor(btn_reports);
         resetColor(btn_service);
         resetColor(btn_contrato);
         resetColor(btn_clientes);
@@ -589,7 +600,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         content.removeAll();
         content.add(p1, BorderLayout.CENTER);
         content.revalidate();
-        content.repaint();*/
+        content.repaint();
     }//GEN-LAST:event_btn_reportsMousePressed
 
     private void AdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdminMouseEntered
@@ -609,7 +620,7 @@ public class Interfaz2 extends javax.swing.JFrame {
     }//GEN-LAST:event_AdminMouseExited
 
     private void AdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdminMousePressed
-        /*setColor(Admin);
+        setColor(Admin);
         resetColor(btn_service);
         resetColor(btn_contrato);
         resetColor(btn_clientes);
@@ -623,7 +634,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         content.removeAll();
         content.add(p1, BorderLayout.CENTER);
         content.revalidate();
-        content.repaint();*/
+        content.repaint();
     }//GEN-LAST:event_AdminMousePressed
 
     private void Login_exitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login_exitMouseEntered
@@ -636,7 +647,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         if (btn_reports.getBackground().getRGB() != -15574355 || btn_service.getBackground().getRGB() != -15574355
                 || btn_contrato.getBackground().getRGB() != -15574355 || btn_prin.getBackground().getRGB() != -15574355
                 || btn_clientes.getBackground().getRGB() != -15574355 || Admin.getBackground().getRGB() != -15574355
-                || Aboutus.getBackground().getRGB() != -15574355)  {
+                || Aboutus.getBackground().getRGB() != -15574355) {
             resetColor(Login_exit);
         }
     }//GEN-LAST:event_Login_exitMouseExited
@@ -719,7 +730,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         if (btn_reports.getBackground().getRGB() != -15574355 || btn_service.getBackground().getRGB() != -15574355
                 || btn_contrato.getBackground().getRGB() != -15574355 || btn_prin.getBackground().getRGB() != -15574355
                 || btn_clientes.getBackground().getRGB() != -15574355 || Admin.getBackground().getRGB() != -15574355
-                || Login_exit.getBackground().getRGB() != -15574355)  {
+                || Login_exit.getBackground().getRGB() != -15574355) {
             resetColor(Aboutus);
         }
     }//GEN-LAST:event_AboutusMouseExited
@@ -782,6 +793,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         pv.setSize(1030, 500);
         pv.setLocation(0, 0);
 
+        eventos.register(pv);
         content.removeAll();
         content.add(pv, BorderLayout.CENTER);
         content.revalidate();
@@ -801,6 +813,7 @@ public class Interfaz2 extends javax.swing.JFrame {
         pg.setSize(1030, 500);
         pg.setLocation(0, 0);
 
+        eventos.register(pg);
         content.removeAll();
         content.add(pg, BorderLayout.CENTER);
         content.revalidate();
@@ -849,13 +862,48 @@ public class Interfaz2 extends javax.swing.JFrame {
                 cerrar = -1;
             }
         }
+
+        if (es.getUbicacion().equals("insert contrato")) {
+
+            String[] arreglo = {"Si", "No"};
+            int opcionp = JOptionPane.showOptionDialog(null, "¿Desea descartar los datos?", "Creacion", 0, JOptionPane.QUESTION_MESSAGE, null, arreglo, "Si");
+            if (arreglo[opcionp].equals("Si")) {
+                cerrar = 1;
+                es.setUbicacion("null");
+            } else {
+                cerrar = -1;
+            }
+        }
+        if (es.getUbicacion().equals("editar contrato")) {
+
+            String[] arreglo = {"Si", "No"};
+            int opcionp = JOptionPane.showOptionDialog(null, "¿Desea descartar los datos?", "Creacion", 0, JOptionPane.QUESTION_MESSAGE, null, arreglo, "Si");
+            if (arreglo[opcionp].equals("Si")) {
+                cerrar = 1;
+                es.setUbicacion("null");
+            } else {
+                cerrar = -1;
+            }
+        }
+        if (es.getUbicacion().equals("cliente contrato")) {
+
+            String[] arreglo = {"Si", "No"};
+            int opcionp = JOptionPane.showOptionDialog(null, "¿Desea descartar los datos?", "Creacion", 0, JOptionPane.QUESTION_MESSAGE, null, arreglo, "Si");
+            if (arreglo[opcionp].equals("Si")) {
+                cerrar = 1;
+                es.setUbicacion("null");
+            } else {
+                cerrar = -1;
+            }
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel About;
     private javax.swing.JPanel Aboutus;
-    private javax.swing.JPanel Admin;
+    public static javax.swing.JPanel Admin;
     private javax.swing.JLabel Admin_l;
     private javax.swing.JLabel Admin_l1;
+    private javax.swing.JLabel Ayuntamiento;
     private javax.swing.JPanel Background;
     private javax.swing.JPanel Header;
     private javax.swing.JPanel Login_exit;

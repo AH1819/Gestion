@@ -5,6 +5,8 @@ import Conexion.PersistenciaLogeo;
 import Entity.ErrorsAndSuccesses;
 import Entity.Logeo;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
@@ -14,10 +16,8 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        this.setLocationRelativeTo(this);
+        this.setLocationRelativeTo(null);
         Error.setVisible(false);
-        user.setFocusTraversalKeysEnabled(false);
-        password.setFocusTraversalKeysEnabled(false);
         Ocultar.setVisible(false);
         Cargando.setVisible(false);
     }
@@ -68,8 +68,8 @@ public class Login extends javax.swing.JFrame {
         Passwordtxt.setFont(new java.awt.Font("Roboto Light", 1, 18)); // NOI18N
         Passwordtxt.setForeground(new java.awt.Color(0, 0, 0));
         Passwordtxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Passwordtxt.setText("PASSWORD");
-        Panel1.add(Passwordtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 110, 30));
+        Passwordtxt.setText("CONTRASEÑA");
+        Panel1.add(Passwordtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 140, 30));
 
         Usertxt.setFont(new java.awt.Font("Roboto Light", 1, 18)); // NOI18N
         Usertxt.setForeground(new java.awt.Color(0, 0, 0));
@@ -79,10 +79,18 @@ public class Login extends javax.swing.JFrame {
 
         user.setBackground(new java.awt.Color(255, 255, 255));
         user.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        user.setForeground(new java.awt.Color(153, 153, 153));
+        user.setForeground(new java.awt.Color(102, 102, 102));
         user.setText(" Ingrese su nombre de usuario");
         user.setBorder(null);
         user.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        user.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userFocusLost(evt);
+            }
+        });
         user.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 userMousePressed(evt);
@@ -104,11 +112,25 @@ public class Login extends javax.swing.JFrame {
 
         password.setBackground(new java.awt.Color(255, 255, 255));
         password.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        password.setText("********");
+        password.setForeground(new java.awt.Color(102, 102, 102));
+        password.setText("••••••••");
         password.setBorder(null);
+        password.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                passwordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                passwordFocusLost(evt);
+            }
+        });
         password.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 passwordMousePressed(evt);
+            }
+        });
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
             }
         });
         password.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -182,7 +204,7 @@ public class Login extends javax.swing.JFrame {
 
         Panel1.add(Barra, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 30));
 
-        Error.setFont(new java.awt.Font("Roboto Light", 1, 18)); // NOI18N
+        Error.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         Error.setForeground(new java.awt.Color(255, 0, 0));
         Error.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Error.setText("Usuario o contraseña incorrecto");
@@ -228,6 +250,11 @@ public class Login extends javax.swing.JFrame {
         Entertxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EntertxtActionPerformed(evt);
+            }
+        });
+        Entertxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                EntertxtKeyReleased(evt);
             }
         });
         Panel1.add(Entertxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 130, 50));
@@ -280,116 +307,34 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitjlabelMouseExited
 
     private void userMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMousePressed
-        // TODO add your handling code here:
-        if (user.getText().equals(" Ingrese su nombre de usuario")) {
-            user.setText("");
-            user.setForeground(Color.BLACK);
-        }
 
-        if (String.valueOf(password.getPassword()).isEmpty()) {
-            password.setText("********");
-            password.setForeground(Color.gray);
-        }
     }//GEN-LAST:event_userMousePressed
 
     private void passwordMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwordMousePressed
-
-        if (user.getText().isEmpty()) {
-            user.setText(" Ingrese su nombre de usuario");
-            user.setForeground(Color.gray);
-        }
-
-        if (String.valueOf(password.getPassword()).equals("********")) {
-            password.setText("");
-            password.setForeground(Color.BLACK);
-        }
+        
     }//GEN-LAST:event_passwordMousePressed
 
     private void passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyReleased
-
-        if (evt.getKeyCode() > 64 && evt.getKeyCode() < 91) {
-            if (password.getText().equals("********" + evt.getKeyChar())) {
-                password.setText("");
-            }
-            if (password.getText().isEmpty()) {
-                password.setText(String.valueOf(evt.getKeyChar()));
-            }
-        }
-        if (password.getText().isEmpty()) {
-            if (evt.getKeyChar() == 'ñ' || evt.getKeyChar() == 'Ñ') {
-                password.setText(String.valueOf(evt.getKeyChar()));
-            }
-        }
-        if (evt.getKeyCode() == 9) {
-            if (password.getText().equals("********")) {
-                password.setText("");
-            }
-        }
-        if (password.getText().equals("*******")) {
-            password.setText("");
-        }
         if (evt.getKeyCode() == 115) {
             CambiarConexion();
         }
         if (evt.getKeyCode() == 10) {
-            if (password.getText().isEmpty() || password.getText().equals("********")) {
+            if (password.getText().isEmpty() || password.getText().equals("••••••••")) {
 
             } else {
-                new Entrar().show();
+                if (user.getText().equals(" Ingrese su nombre de usuario") || user.getText().isEmpty()
+                        || password.getText().equals("••••••••") || password.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Los campos no estan llenos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    new Entrar().show();
+                }
             }
         }
     }//GEN-LAST:event_passwordKeyReleased
 
     private void userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyReleased
-        if (evt.getKeyCode() > 64 && evt.getKeyCode() < 91) {
-            if (user.getText().equals(" Ingrese su nombre de usuario" + evt.getKeyChar())) {
-                user.setText("");
-                user.setForeground(Color.BLACK);
-            }
-            if (user.getText().isEmpty()) {
-                user.setText(String.valueOf(evt.getKeyChar()));
-                user.setForeground(Color.BLACK);
-            }
-        } else {
-            if (user.getText().equals(" Ingrese su nombre de usuario" + evt.getKeyChar())) {
-                user.setText("");
-                user.setForeground(Color.BLACK);
-            } else {
-
-            }
-        }
-        if (user.getText().isEmpty()) {
-            if (evt.getKeyChar() == 'ñ' || evt.getKeyChar() == 'Ñ') {
-                user.setText(String.valueOf(evt.getKeyChar()));
-                user.setForeground(Color.BLACK);
-            }
-        }
-
-        if (evt.getKeyCode() == 9) {
-
-            if (user.getText().equals(" Ingrese su nombre de usuario")) {
-                user.setText("");
-                user.setForeground(Color.BLACK);
-            }
-        }
-        if (user.getText().equals(" Ingrese su nombre de usuari")) {
-            user.setText("");
-            user.setForeground(Color.BLACK);
-        }
-
         if (evt.getKeyCode() == 10) {
-
             password.requestFocus();
-            if (user.getText().isEmpty()) {
-                user.setText(" Ingrese su nombre de usuario");
-                user.setForeground(Color.gray);
-            }
-            if (password.getText().isEmpty()) {
-                password.setText("********");
-            }
-            if (password.getText().equals("********")) {
-                password.setText("");
-            }
         }
     }//GEN-LAST:event_userKeyReleased
 
@@ -405,12 +350,17 @@ public class Login extends javax.swing.JFrame {
 
     private void OcultarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OcultarMousePressed
         Mostrar.setVisible(true);
-        password.setEchoChar('*');
+        password.setEchoChar('•');
         Ocultar.setVisible(false);
     }//GEN-LAST:event_OcultarMousePressed
 
     private void EntertxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntertxtActionPerformed
-        new Entrar().show();
+        if (user.getText().equals(" Ingrese su nombre de usuario") || user.getText().isEmpty()
+                || password.getText().equals("••••••••") || password.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Los campos no estan llenos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            new Entrar().show();
+        }
     }//GEN-LAST:event_EntertxtActionPerformed
 
     private void EntertxtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EntertxtMouseEntered
@@ -420,6 +370,49 @@ public class Login extends javax.swing.JFrame {
     private void EntertxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EntertxtMouseExited
         Entertxt.setBackground(new Color(0, 134, 190));
     }//GEN-LAST:event_EntertxtMouseExited
+
+    private void userFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusGained
+        user.setForeground(Color.BLACK);
+        if (user.getText().equals(" Ingrese su nombre de usuario")) {
+            user.setText("");
+        }
+    }//GEN-LAST:event_userFocusGained
+
+    private void userFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusLost
+        user.setForeground(new java.awt.Color(102, 102, 102));
+        if (user.getText().isEmpty()) {
+            user.setText(" Ingrese su nombre de usuario");
+        }
+    }//GEN-LAST:event_userFocusLost
+
+    private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
+        password.setForeground(Color.BLACK);
+        if (password.getText().equals("••••••••")) {
+            password.setText("");
+        }
+    }//GEN-LAST:event_passwordFocusGained
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusLost
+        password.setForeground(new java.awt.Color(102, 102, 102));
+        if (password.getText().isEmpty()) {
+            password.setText("••••••••");
+        }
+    }//GEN-LAST:event_passwordFocusLost
+
+    private void EntertxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EntertxtKeyReleased
+        if (evt.getKeyCode() == 10) {
+            if (user.getText().equals(" Ingrese su nombre de usuario") || user.getText().isEmpty()
+                    || password.getText().equals("••••••••") || password.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Los campos no estan llenos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                new Entrar().show();
+            }
+        }
+    }//GEN-LAST:event_EntertxtKeyReleased
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -428,18 +421,11 @@ public class Login extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new Login().setVisible(true);
             }
@@ -452,8 +438,8 @@ public class Login extends javax.swing.JFrame {
             new Thread(this).start();
         }
 
-        @Override
         public void run() {
+
             Cargando.setVisible(true);
             user.setEditable(false);
             password.setEditable(false);
@@ -479,27 +465,17 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void entrar() {
-
-        if (user.getText().equals(" Ingrese su nombre de usuario")
-                || password.getText().equals("********")
-                || user.getText().isEmpty()
-                || password.getText().isEmpty()) {
-
-            JOptionPane.showMessageDialog(null, "Los campos no estan llenos", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-
+        PersistenciaLogeo pl = new PersistenciaLogeo();
+        pl.Leer();
+        Conexion con = new Conexion();
+        Logeo p0 = new Logeo(user.getText(), password.getText());
+        con.conectar();
+        if (er.isExitoConexion() == true) {
+            Interfaz2 p1 = new Interfaz2();
+            p1.setVisible(true);
+            this.dispose();
         } else {
-            PersistenciaLogeo pl = new PersistenciaLogeo();
-            pl.Leer();
-            Conexion con = new Conexion();
-            Logeo p0 = new Logeo(user.getText(), password.getText());
-            con.conectar();
-            if (er.isExitoConexion() == true) {
-                Interfaz2 p1 = new Interfaz2();
-                p1.setVisible(true);
-                this.dispose();
-            } else {
-                new Error().show();
-            }
+            new Error().show();
         }
     }
 
@@ -509,11 +485,14 @@ public class Login extends javax.swing.JFrame {
             new Thread(this).start();
         }
 
-        @Override
         public void run() {
-            Error.setVisible(true);
-            ciclo();
-            Error.setVisible(false);
+            try {
+                Error.setVisible(true);
+                Thread.sleep(4000);
+                Error.setVisible(false);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

@@ -19,13 +19,14 @@ public class Cliente {
     private String residencia;
     private String nombreCalle;
     private String calleReferencia;
-    private String numeroMzn;
-    private String numeroLt;
+    private int numeroMzn;
+    private int numeroLt;
     private String status;
     private double deuda;
-    private static Integer folioc;
+    private String consumo;
+    private static Integer folioc = 0;
 
-    public Cliente(Integer folio, String municipio, String residencia, String nombreCalle, String calleReferencia, String numeroMzn, String numeroLt) {
+    public Cliente(Integer folio, String municipio, String residencia, String nombreCalle, String calleReferencia, int numeroMzn, int numeroLt) {
         this.folio = folio;
         this.municipio = municipio;
         this.residencia = residencia;
@@ -149,19 +150,19 @@ public class Cliente {
         this.calleReferencia = calleReferencia;
     }
 
-    public String getNumeroMzn() {
+    public int getNumeroMzn() {
         return numeroMzn;
     }
 
-    public void setNumeroMzn(String numeroMzn) {
+    public void setNumeroMzn(int numeroMzn) {
         this.numeroMzn = numeroMzn;
     }
 
-    public String getNumeroLt() {
+    public int getNumeroLt() {
         return numeroLt;
     }
 
-    public void setNumeroLt(String numeroLt) {
+    public void setNumeroLt(int numeroLt) {
         this.numeroLt = numeroLt;
     }
 
@@ -175,8 +176,9 @@ public class Cliente {
 
     public Cliente() {
     }
+    
 
-    public Cliente(Integer folio, String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, String numeroMzn, String numeroLt) {
+    public Cliente(Integer folio, String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, int numeroMzn, int numeroLt) {
         this.folio = folio;
         this.nombre = nombre;
         this.apellido_p = apellido_p;
@@ -195,7 +197,7 @@ public class Cliente {
         this.numeroLt = numeroLt;
     }
     
-    public Cliente(String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, String numeroMzn, String numeroLt, String status) {
+    public Cliente(String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, int numeroMzn, int numeroLt, String status) {
         this.nombre = nombre;
         this.apellido_p = apellido_p;
         this.apellido_m = apellido_m;
@@ -214,7 +216,7 @@ public class Cliente {
         this.status = status;
     }
 
-    public Cliente(String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, String numeroMzn, String numeroLt) {
+    public Cliente(String nombre, String apellido_p, String apellido_m, Date fecha_nac, String telefono, String celular, String email, String curp, String rfc, String municipio, String residencia, String nombreCalle, String calleReferencia, int numeroMzn, int numeroLt) {
         this.nombre = nombre;
         this.apellido_p = apellido_p;
         this.apellido_m = apellido_m;
@@ -240,7 +242,7 @@ public class Cliente {
         this.deuda = deuda;
     }
 
-    public Cliente(String nombre, String apellido_p, String apellido_m, String celular, String municipio, String residencia, String numeroMzn, String numeroLt, double deuda) {
+    public Cliente(String nombre, String apellido_p, String apellido_m, String celular, String municipio, String residencia, int numeroMzn, int numeroLt, double deuda) {
         this.nombre = nombre;
         this.apellido_p = apellido_p;
         this.apellido_m = apellido_m;
@@ -266,6 +268,14 @@ public class Cliente {
 
     public void setFolioc(Integer folioc) {
         this.folioc = folioc;
+    }
+
+    public String getConsumo() {
+        return consumo;
+    }
+
+    public void setConsumo(String consumo) {
+        this.consumo = consumo;
     }
     
 }

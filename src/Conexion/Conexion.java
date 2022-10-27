@@ -34,7 +34,6 @@ public class Conexion {
             eae.setExitoConexion(true);
             
         } catch (SQLException ex) {
-            System.out.println(""+ex);
             eae.setErrorconexion(""+ex.getMessage());
             eae.setExitoConexion(false);
         }

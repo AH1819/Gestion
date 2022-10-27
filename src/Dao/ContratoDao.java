@@ -58,7 +58,7 @@ public class ContratoDao {
     public int ActualizarContrato(Contrato contrato) {
         int ret = 0;
 
-        String sql = "update contrato set municipio = ? , residencia = ?, numbre_calle = ?, calle_referencia = ?, numero_mzn = ?, numeo_lt = ?, consec = ?, id_consumo = ?, id_periodo = ? where folio_contrato = ?";
+        String sql = "update contrato set municipio = ? , residencia = ?, nombre_calle = ?, calle_referencia = ?,observaciones = ?, numero_mzn = ?, numero_lt = ? where folio_contrato = ?";
         PreparedStatement comando = null;
 
         try {
@@ -66,13 +66,11 @@ public class ContratoDao {
             comando.setString(1, contrato.getMunicipio());
             comando.setString(2, contrato.getResidencia());
             comando.setString(3, contrato.getNombreCalle());
-            comando.setString(5, contrato.getCalleReferencia());
+            comando.setString(4, contrato.getCalleReferencia());
+            comando.setString(5, contrato.getObservaciones());
             comando.setInt(6, contrato.getNumeroMzn());
             comando.setInt(7, contrato.getNumeroLt());
-            comando.setInt(8, contrato.getConsec());
-            comando.setInt(9, contrato.getId_consumo());
-            comando.setInt(10, contrato.getId_periodo());
-            comando.setInt(11, contrato.getFolioContrato());
+            comando.setInt(8, contrato.getFolioContrato());
 
             comando.executeUpdate();
 
@@ -80,7 +78,6 @@ public class ContratoDao {
             comando.close();
 
         } catch (SQLException ex) {
-            Logger.getLogger(ContratoDao.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
         }
         return ret;
@@ -199,6 +196,7 @@ public class ContratoDao {
 
         return SCT;
     }
+
     public List<Contrato> SearchContratos_c(int folio) {
         List<Contrato> SCT = new ArrayList<>();
 
@@ -231,16 +229,17 @@ public class ContratoDao {
 
         return SCT;
     }
+
     public List<Contrato> ContratosC(int folio) {
         List<Contrato> SCT = new ArrayList<>();
 
-        String sql = "select contrato.folio_contrato,contrato.municipio,contrato.residencia,"
+        String sql = "select cliente.nombre,cliente.apellido_p,cliente.apellido_m,contrato.folio_contrato,contrato.municipio,contrato.residencia,"
                 + "contrato.numero_mzn,contrato.numero_lt,contrato.deuda,contrato.status "
                 + "from contrato "
                 + "inner join cliente "
                 + "on cliente.folio_cte = contrato.folio_cte "
                 + "where cliente.folio_cte =?"
-                + "order by folio_contrato";
+                + "order by contrato.status ASC";
         PreparedStatement comando = null;
 
         try {
@@ -256,6 +255,7 @@ public class ContratoDao {
                 ct.setNumeroLt(Resultado.getInt("numero_lt"));
                 ct.setDeuda(Resultado.getDouble("deuda"));
                 ct.setStatus(Resultado.getString("status"));
+                ct.setNombre(Resultado.getString("nombre") + " " + Resultado.getString("apellido_p") + " " + Resultado.getString("apellido_m"));
                 SCT.add(ct);
             }
         } catch (SQLException ex) {
@@ -286,4 +286,42 @@ public class ContratoDao {
 
         return SCT;
     }
+
+    public List<Contrato> GenerarContrato(int folio) {
+        List<Contrato> SCT = new ArrayList<>();
+
+        String sql = "select cliente.folio_cte,cliente.nombre,cliente.apellido_p,cliente.apellido_m,contrato.folio_contrato,contrato.municipio,contrato.residencia,"
+                + "contrato.nombre_calle,contrato.numero_mzn,contrato.numero_lt "
+                + "from contrato "
+                + "inner join cliente "
+                + "on cliente.folio_cte = contrato.folio_cte "
+                + "where contrato.folio_contrato =? "
+                + "order by contrato.status ASC";
+        PreparedStatement comando = null;
+
+        try {
+            comando = conexion.conectar().prepareStatement(sql);
+            comando.setInt(1, folio);
+            Resultado = comando.executeQuery();
+            while (Resultado.next()) {
+                Contrato ct = new Contrato();
+                ct.setFolioContrato(Integer.parseInt(Resultado.getString("folio_contrato")));
+                ct.setFolio_cte(Resultado.getInt("folio_cte"));
+                ct.setMunicipio(Resultado.getString("municipio"));
+                ct.setResidencia(Resultado.getString("residencia"));
+                ct.setNombreCalle(Resultado.getString("nombre_calle"));
+                ct.setNumeroMzn(Resultado.getInt("numero_mzn"));
+                ct.setNumeroLt(Resultado.getInt("numero_lt"));
+                ct.setNombre(Resultado.getString("nombre") + " " + Resultado.getString("apellido_p") + " " + Resultado.getString("apellido_m"));
+                SCT.add(ct);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ContratoDao.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return SCT;
+    }
+
 }
